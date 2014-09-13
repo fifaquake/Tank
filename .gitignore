@@ -1,1 +1,8 @@
 node_modules
+public/javascripts/lib/
+*.json~
+*.gitignore~
+*.bowerrc~
+*.un~
+*.swp
+*.ejs~
