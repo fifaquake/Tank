@@ -9,8 +9,15 @@ module.exports = function(grunt) {
 							 'public/javascripts/lib/pixi/bin/pixi.js'],
 						dest:'public/javascripts/libs.js'
 					}
+			},
+			jshint: {
+				files:['public/javascripts/sources/*.js'],
+		        options: {
+				}
+
 			}
 	});	
 	grunt.loadNpmTasks('grunt-contrib-concat');
-	grunt.registerTask('default', ['concat']);
+	grunt.loadNpmTasks('grunt-contrib-jshint');
+	grunt.registerTask('default', ['concat', 'jshint']);
 }

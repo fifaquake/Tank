@@ -39,7 +39,7 @@
         switch (event.keyCode) {
             case 37:
                 moveLeft();
-                break
+                break;
             case 38:
                 moveUp();
                 break;
