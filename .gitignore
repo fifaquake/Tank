@@ -6,3 +6,6 @@ public/javascripts/lib/
 *.un~
 *.swp
 *.ejs~
+*.js~
+*.log
+public/javascripts/libs.js
