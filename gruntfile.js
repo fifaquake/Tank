@@ -15,9 +15,17 @@ module.exports = function(grunt) {
 		        options: {
 				}
 
-			}
+			},
+			uglify: {
+			    my_target: {
+				       files: {
+				   	    'public/javascripts/sources/client.min.js': ['public/javascripts/sources/client.js']
+                       }
+                   }
+            }
 	});	
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
-	grunt.registerTask('default', ['concat', 'jshint']);
+	grunt.loadNpmTasks('grunt-contrib-uglify');
+	grunt.registerTask('default', ['concat', 'jshint', 'uglify']);
 }
