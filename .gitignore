@@ -3,3 +3,4 @@ public/javascripts/lib/
 *.*~
 *.swp
 *.log
+bin/www~

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+	<script src = "javascripts/libs.js"> 
+    </script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: white;
+        }
+    </style>
+
+  </head>
+  <body>
+  <script>
+		var socket = io();
+		socket.on('welcome', function(data){
+		  alert(data.info);
+		});
+  </script>
+  </body>
+</html>

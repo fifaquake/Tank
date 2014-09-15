@@ -6,12 +6,13 @@ module.exports = function(grunt) {
 					},
 					dist: {
 					    src:['public/javascripts/lib/jquery/dist/jquery.min.js',
-							 'public/javascripts/lib/pixi/bin/pixi.js'],
+							 'public/javascripts/lib/pixi/bin/pixi.js',
+						     'public/javascripts/lib/socket.io-client/socket.io.js'],
 						dest:'public/javascripts/libs.js'
 					}
 			},
 			jshint: {
-				files:['public/javascripts/sources/*.js'],
+				files:['public/javascripts/sources/*.js', '!public/javascripts/sources/*.min.js'],
 		        options: {
 				}
 

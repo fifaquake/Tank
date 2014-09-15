@@ -7,3 +7,12 @@ app.set('port', process.env.PORT || 3000);
 var server = app.listen(app.get('port'), function() {
   debug('Express server listening on port ' + server.address().port);
 });
+
+var io = require('socket.io')(server);
+io.on('connection', function(socket){
+  console.log('a user connected');
+  socket.on('disconnect', function(){
+    console.log('user disconnected');
+  });
+  socket.emit('welcome', {'info' : 'Awesome, Welcome to the real world!'});
+});

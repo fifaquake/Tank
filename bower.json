@@ -2,6 +2,7 @@
   "name": "Battle Tank",
   "dependencies": {
     "jquery": "~2.1.1",
-    "pixi": "~1.6.1"
+    "pixi": "~1.6.1",
+    "socket.io-client": "~1.1.0"
   }
 }
