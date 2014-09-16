@@ -14,5 +14,5 @@ io.on('connection', function(socket){
   socket.on('disconnect', function(){
     console.log('user disconnected');
   });
-  socket.emit('welcome', {'info' : 'Awesome, Welcome to the real world!'});
+  socket.emit('welcome', {'resource' : 'p1tank'});
 });

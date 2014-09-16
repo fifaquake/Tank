@@ -18,8 +18,55 @@
   <script>
 		var socket = io();
 		socket.on('welcome', function(data){
-		  alert(data.info);
+			var playerUpResource = 'resources/images/' + data.resource + 'U.gif';
+			var playerDownResource = 'resources/images/' + data.resource + 'D.gif';
+			var playerLeftResource = 'resources/images/' + data.resource + 'L.gif';
+			var playerRightResource = 'resources/images/' + data.resource + 'R.gif';
+
+			// create an new instance of a pixi stage
+			var stage = new PIXI.Stage(0x000000);
+
+			// create a renderer instance
+			var renderer = PIXI.autoDetectRenderer(400, 300);
+
+			// add the renderer view element to the DOM
+			document.body.appendChild(renderer.view);
+			requestAnimFrame(animate);
+
+			// create a texture from an image path
+			var playerUpTexture = PIXI.Texture.fromImage(playerUpResource);
+			var playerDownTexture = PIXI.Texture.fromImage(playerDownResource);
+			var playerLeftTexture = PIXI.Texture.fromImage(playerLeftResource);
+			var playerRightTexture = PIXI.Texture.fromImage(playerRightResource);
+
+			// create a new Sprite using the texture
+			var playerUp = new PIXI.Sprite(playerUpTexture);
+			var playerDown = new PIXI.Sprite(playerDownTexture);
+			var playerLeft = new PIXI.Sprite(playerLeftTexture);
+			var playerRight = new PIXI.Sprite(playerRightTexture);
+
+			// center the sprites anchor point
+			playerUp.anchor.x = 0.5;
+			playerUp.anchor.y = 0.5;
+
+			// move the sprite to the center of the screen
+			playerUp.position.x = 200;
+			playerUp.position.y = 150;
+
+			stage.addChild(playerUp);
+
+
+			function animate() {
+
+				requestAnimFrame(animate);
+
+				// render the stage   
+				renderer.render(stage);
+			}
+    
 		});
+
+
   </script>
   </body>
 </html>
