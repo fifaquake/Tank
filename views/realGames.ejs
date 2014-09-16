@@ -27,7 +27,7 @@
 			var stage = new PIXI.Stage(0x000000);
 
 			// create a renderer instance
-			var renderer = PIXI.autoDetectRenderer(400, 300);
+			var renderer = PIXI.autoDetectRenderer(800, 600);
 
 			// add the renderer view element to the DOM
 			document.body.appendChild(renderer.view);
@@ -40,20 +40,17 @@
 			var playerRightTexture = PIXI.Texture.fromImage(playerRightResource);
 
 			// create a new Sprite using the texture
-			var playerUp = new PIXI.Sprite(playerUpTexture);
-			var playerDown = new PIXI.Sprite(playerDownTexture);
-			var playerLeft = new PIXI.Sprite(playerLeftTexture);
-			var playerRight = new PIXI.Sprite(playerRightTexture);
+			var player = new PIXI.Sprite(playerUpTexture);
 
 			// center the sprites anchor point
-			playerUp.anchor.x = 0.5;
-			playerUp.anchor.y = 0.5;
+			player.anchor.x = 0.5;
+			player.anchor.y = 0.5;
 
 			// move the sprite to the center of the screen
-			playerUp.position.x = 200;
-			playerUp.position.y = 150;
+			player.position.x = 200;
+			player.position.y = 150;
 
-			stage.addChild(playerUp);
+			stage.addChild(player);
 
 
 			function animate() {
@@ -63,10 +60,46 @@
 				// render the stage   
 				renderer.render(stage);
 			}
-    
+
+		    $(document).keydown(function (event) {
+				switch (event.keyCode) {
+					case 37:
+						moveLeft();
+						break;
+					case 38:
+						moveUp();
+						break;
+					case 39:
+						moveRight();
+						break;
+					case 40:
+						moveDown();
+						break;
+				}
+			});
+
+			// todo
+			// should sent messages to server
+			function moveLeft() {
+				player.setTexture(playerLeftTexture);
+				player.position.x -= 10;
+			}
+
+			function moveRight() {
+				player.setTexture(playerRightTexture);
+				player.position.x += 10;
+			}
+
+			function moveUp() {
+				player.setTexture(playerUpTexture);
+				player.position.y -= 10;
+			}
+
+			function moveDown() {
+				player.setTexture(playerDownTexture);
+				player.position.y += 10;
+			}
 		});
-
-
   </script>
   </body>
 </html>
