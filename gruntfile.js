@@ -13,7 +13,10 @@ module.exports = function(grunt) {
 		},
 
 		jshint: {
-			files:['public/javascripts/sources/*.js', '!public/javascripts/sources/*.min.js'],
+			files:['public/javascripts/sources/*.js',
+				   'server/*.js',
+				   'bin/*',
+				   '!public/javascripts/sources/*.min.js'],
 			options: {
 			}
 		},
@@ -30,5 +33,6 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
-	grunt.registerTask('default', ['concat', 'jshint', 'uglify']);
+	grunt.registerTask('all', ['concat', 'jshint', 'uglify']);
+	grunt.registerTask('default', ['jshint', 'uglify']);
 }
