@@ -1,33 +1,34 @@
 module.exports = function(grunt) {
 	grunt.initConfig({
-			pkg : grunt.file.readJSON('package.json'),
-			concat: {
-					options: {
-					},
-					dist: {
-					    src:['public/javascripts/lib/jquery/dist/jquery.min.js',
-							 'public/javascripts/lib/pixi/bin/pixi.js',
-						     'public/javascripts/lib/socket.io-client/socket.io.js'],
-						dest:'public/javascripts/libs.js'
-					}
+		pkg : grunt.file.readJSON('package.json'),
+		concat: {
+			options: {
 			},
-			jshint: {
-				files:['public/javascripts/sources/*.js', '!public/javascripts/sources/*.min.js'],
-		        options: {
-				}
+			dist: {
+				src:['public/javascripts/lib/jquery/dist/jquery.min.js',
+					 'public/javascripts/lib/pixi/bin/pixi.js',
+					 'public/javascripts/lib/socket.io-client/socket.io.js'],
+				dest:'public/javascripts/libs.js'
+			}
+		},
 
-			},
-			uglify: {
-			    my_target: {
-				       files: {
-				   	    'public/javascripts/sources/client.min.js': ['public/javascripts/sources/client.js']
-                       }
-                   }
-            }
+		jshint: {
+			files:['public/javascripts/sources/*.js', '!public/javascripts/sources/*.min.js'],
+			options: {
+			}
+		},
+		
+		uglify: {
+			my_target: {
+				files: {
+					'public/javascripts/sources/client.min.js': ['public/javascripts/sources/client.js']
+				}
+			}
+		}
 	});	
+
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
-	//grunt.registerTask('default', ['concat', 'jshint', 'uglify']);
-	grunt.registerTask('default', ['concat']);
+	grunt.registerTask('default', ['concat', 'jshint', 'uglify']);
 }
