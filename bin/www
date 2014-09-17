@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 var debug = require('debug')('tank');
 var app = require('../app');
+var clientCount = 0;
 
 app.set('port', process.env.PORT || 3000);
 
@@ -10,9 +11,18 @@ var server = app.listen(app.get('port'), function() {
 
 var io = require('socket.io')(server);
 io.on('connection', function(socket){
+  clientCount++;
   console.log('a user connected');
   socket.on('disconnect', function(){
+	clientCount--;
     console.log('user disconnected');
   });
-  socket.emit('welcome', {'resource' : 'p1tank'});
+  
+  var resource;
+  if (clientCount == 1) {
+	resource = 'p1tank';
+  } else {
+	resource = 'p2tank';
+  }
+  socket.emit('welcome', {'resource' : resource});
 });
