@@ -33,7 +33,7 @@ exports.startGameServer = function (expressServer) {
         } else {
 			resource = null;
 		}
-        socket.emit('update', { 'tanks': tanks });
+        io.emit('update', { 'tanks': tanks });
 
         socket.on('disconnect', function () {
 			// remove the last tanks
@@ -49,7 +49,7 @@ exports.startGameServer = function (expressServer) {
 			curTank.resource = 'p' + id + 'tankL.gif';
 			tanks[id - 1] = curTank;
 
-			socket.emit('update', { 'tanks': tanks });
+			io.emit('update', { 'tanks': tanks });
 		});
 		socket.on('right', function(data){
 			var id = data.id;
@@ -58,7 +58,7 @@ exports.startGameServer = function (expressServer) {
 			curTank.resource = 'p' + id + 'tankR.gif';
 			tanks[id - 1] = curTank;
 
-			socket.emit('update', { 'tanks': tanks });
+			io.emit('update', { 'tanks': tanks });
 		});
 		socket.on('up', function(data){
 			var id = data.id;
@@ -67,7 +67,7 @@ exports.startGameServer = function (expressServer) {
 			curTank.resource = 'p' + id + 'tankU.gif';
 			tanks[id - 1] = curTank;
 
-			socket.emit('update', { 'tanks': tanks });
+			io.emit('update', { 'tanks': tanks });
 		});
 		socket.on('down', function(data){
 			var id = data.id;
@@ -76,7 +76,7 @@ exports.startGameServer = function (expressServer) {
 			curTank.resource = 'p' + id + 'tankD.gif';
 			tanks[id - 1] = curTank;
 
-			socket.emit('update', { 'tanks': tanks });
+			io.emit('update', { 'tanks': tanks });
 		});
     });
 };
