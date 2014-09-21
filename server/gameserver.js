@@ -3,12 +3,9 @@ var BTTank = require('./objects/bttank.js');
 exports.startGameServer = function (expressServer) {
     var clientCount = 0;
     var io = require('socket.io')(expressServer);
+	var p1Tank = null;
+	var p2Tank = null;
     io.on('connection', function (socket) {
-		var tanks = [];
-		
-		var p1Tank;
-		var p2Tank;
-
         clientCount++;
         socket.emit('welcome', { 'id': clientCount });
 
@@ -25,58 +22,52 @@ exports.startGameServer = function (expressServer) {
         if (clientCount === 1) {
 			p1Tank = new BTTank('p1tankU.gif', 0, 0);
             resource = p1Tank.resource;
-			tanks.push(p1Tank);
         } else if (clientCount === 2){
 			p2Tank = new BTTank('p2tankU.gif', 0 , 0);
             resource = p2Tank.resource;
-			tanks.push(p2Tank);
         } else {
-			resource = null;
+			return;
 		}
-        io.emit('update', { 'tanks': tanks });
+		io.emit('update', { 'tanks': [p1Tank, p2Tank] });
+
 
         socket.on('disconnect', function () {
-			// remove the last tanks
-			tanks.pop();
+			// how to know which tank is removed ?
             clientCount--;
             console.log('user disconnected');
         });
 
 		socket.on('left', function(data){
 			var id = data.id;
-			var curTank = tanks[id - 1];
+			var curTank =((id == 1) ? p1Tank : p2Tank);
 			curTank.x = curTank.x - 10;
 			curTank.resource = 'p' + id + 'tankL.gif';
-			tanks[id - 1] = curTank;
 
-			io.emit('update', { 'tanks': tanks });
+			io.emit('update', { 'tanks': [p1Tank, p2Tank] });
 		});
 		socket.on('right', function(data){
 			var id = data.id;
-			var curTank = tanks[id - 1];
+			var curTank =((id == 1) ? p1Tank : p2Tank);
 			curTank.x = curTank.x + 10;
 			curTank.resource = 'p' + id + 'tankR.gif';
-			tanks[id - 1] = curTank;
 
-			io.emit('update', { 'tanks': tanks });
+			io.emit('update', { 'tanks': [p1Tank, p2Tank] });
 		});
 		socket.on('up', function(data){
 			var id = data.id;
-			var curTank = tanks[id - 1];
+			var curTank =((id == 1) ? p1Tank : p2Tank);
 			curTank.y = curTank.y - 10;
 			curTank.resource = 'p' + id + 'tankU.gif';
-			tanks[id - 1] = curTank;
 
-			io.emit('update', { 'tanks': tanks });
+			io.emit('update', { 'tanks': [p1Tank, p2Tank] });
 		});
 		socket.on('down', function(data){
 			var id = data.id;
-			var curTank = tanks[id - 1];
+			var curTank =((id == 1) ? p1Tank : p2Tank);
 			curTank.y = curTank.y + 10;
 			curTank.resource = 'p' + id + 'tankD.gif';
-			tanks[id - 1] = curTank;
 
-			io.emit('update', { 'tanks': tanks });
+			io.emit('update', { 'tanks': [p1Tank, p2Tank] });
 		});
     });
 };

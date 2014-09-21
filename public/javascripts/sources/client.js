@@ -70,6 +70,7 @@
 
 		for (var i = 0; i < tanks.length; i++) {
 			var curTank = tanks[i];
+			if (null === curTank) continue;
 			var playerResource ='resources/images/' + curTank.resource;
 			var playerTexture = PIXI.Texture.fromImage(playerResource);
 			// create a new Sprite using the texture
