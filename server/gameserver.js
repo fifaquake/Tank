@@ -17,7 +17,7 @@ exports.startGameServer = function (expressServer) {
         socket.on('disconnect', function () {
 			// remove the last tanks
             clientCount--;
-			tanks[ClientCount] = null;
+			tanks[clientCount] = null;
             console.log('user disconnected');
         });
 
