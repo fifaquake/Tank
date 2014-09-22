@@ -20,6 +20,20 @@ exports.startGameServer = function (expressServer) {
 		return curTank;
 	}
 
+	function getRandomX() {
+		var x = Math.floor(Math.random() * 800);
+		console.log("X = " + x);
+
+		return x;
+	}
+
+	function getRandomY() {
+		var y = Math.floor(Math.random() * 600);
+		console.log("Y = " + y);
+
+		return y;
+	}
+
     io.on('connection', function (socket) {
 
         socket.emit('welcome', null);
@@ -27,9 +41,11 @@ exports.startGameServer = function (expressServer) {
         console.log('a user connected with id = ' + socket.id);
 
         if (p1Tank === null) {
-			p1Tank = new BTTank('p1tankU.gif', 'p1tankD.gif', 'p1tankL.gif', 'p1TankR.gif', 0, 0, socket.id);
+			p1Tank = new BTTank('p1tankU.gif', 'p1tankD.gif', 'p1tankL.gif', 'p1TankR.gif',
+								 getRandomX(), getRandomY(), socket.id);
         } else if (p2Tank === null){
-			p2Tank = new BTTank('p2tankU.gif', 'p2tankD.gif', 'p2tankL.gif', 'p2TankR.gif', 0 , 0, socket.id);
+			p2Tank = new BTTank('p2tankU.gif', 'p2tankD.gif', 'p2tankL.gif', 'p2TankR.gif',
+								 getRandomX(), getRandomY(), socket.id);
         } else {
 			return;
 		}
