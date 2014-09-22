@@ -1,12 +1,10 @@
 (function(){
 	var socket = io();
-	var id = 0;
 	// create an new instance of a pixi stage
 	var stage = new PIXI.Stage(0x000000);
 
 	// create a renderer instance
 	var renderer = PIXI.autoDetectRenderer(800, 600);
-
 
 	// add the renderer view element to the DOM
 	document.body.appendChild(renderer.view);
@@ -38,25 +36,22 @@
 
 	// should sent messages to server
 	function moveLeft() {
-		 socket.emit('left', { 'id': id });
+		 socket.emit('left', null);
 	}
 
 	function moveRight() {
-		 socket.emit('right', { 'id': id});
+		 socket.emit('right', null);
 	}
 
 	function moveUp() {
-		 socket.emit('up', { 'id': id});
+		 socket.emit('up', null);
 	}
 
 	function moveDown() {
-		 socket.emit('down', { 'id': id });
+		 socket.emit('down', null);
 	}
 
 	socket.on('welcome', function(data){
-		if (!data) return;
-
-		id = data.id;
 	});
 
 	socket.on('update', function(data){
@@ -87,5 +82,4 @@
 
 		requestAnimFrame(animate);
 	});
-
 })();
