@@ -19,17 +19,20 @@
 
 	$(document).keydown(function (event) {
 		switch (event.keyCode) {
-			case 37:
+			case 65: // a
 				moveLeft();
 				break;
-			case 38:
+			case 87: // w
 				moveUp();
 				break;
-			case 39:
+			case 68: // d
 				moveRight();
 				break;
-			case 40:
+			case 83: // s
 				moveDown();
+				break;
+			case 74: // j
+				fire();
 				break;
 		}
 	});
