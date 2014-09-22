@@ -11,13 +11,6 @@ exports.startGameServer = function (expressServer) {
 
         console.log('a user connected');
 
-        socket.on('disconnect', function () {
-			// remove the last tanks
-            clientCount--;
-			tanks[clientCount] = null;
-            console.log('user disconnected');
-        });
-
         var resource;
         if (clientCount === 1) {
 			p1Tank = new BTTank('p1tankU.gif', 0, 0);
