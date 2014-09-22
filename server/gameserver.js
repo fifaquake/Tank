@@ -77,14 +77,11 @@ exports.startGameServer = function (expressServer) {
 			if (curTank === null) return;
 
 			curTank.x = curTank.x - 10;
-<<<<<<< HEAD
 			if(curTank.x <= curTank.width/2)//boundary check
 				curTank.x = curTank.width/2;
 
-			curTank.resource = 'p' + id + 'tankL.gif';
-=======
 			curTank.resource = curTank.leftResource;
->>>>>>> fcb46c02d61e30e8d31c361fb31bfb9c75ad06aa
+
 
 			io.emit('update', { 'tanks': [p1Tank, p2Tank] });
 		});
@@ -94,14 +91,10 @@ exports.startGameServer = function (expressServer) {
 			if (curTank === null) return;
 
 			curTank.x = curTank.x + 10;
-<<<<<<< HEAD
 			if(curTank.x >= 800 - curTank.width/2)//boundary check
 				curTank.x = 800-curTank.width/2;
 
-			curTank.resource = 'p' + id + 'tankR.gif';
-=======
 			curTank.resource = curTank.rightResource;
->>>>>>> fcb46c02d61e30e8d31c361fb31bfb9c75ad06aa
 
 			io.emit('update', { 'tanks': [p1Tank, p2Tank] });
 		});
@@ -111,14 +104,10 @@ exports.startGameServer = function (expressServer) {
 			if (curTank === null) return;
 
 			curTank.y = curTank.y - 10;
-<<<<<<< HEAD
 			if(curTank.y <= curTank.height/2)//boundary check
 				curTank.y = curTank.height/2;
 
-			curTank.resource = 'p' + id + 'tankU.gif';
-=======
 			curTank.resource = curTank.upResource;
->>>>>>> fcb46c02d61e30e8d31c361fb31bfb9c75ad06aa
 
 			io.emit('update', { 'tanks': [p1Tank, p2Tank] });
 		});
@@ -127,14 +116,10 @@ exports.startGameServer = function (expressServer) {
 			var curTank = getCurrentTank(socket.id);
 			if (curTank === null) return;
 			curTank.y = curTank.y + 10;
-<<<<<<< HEAD
 			if(curTank.y > 600 - curTank.height/2)//boundary check
 				curTank.y = 600- curTank.height/2;
 
-			curTank.resource = 'p' + id + 'tankD.gif';
-=======
 			curTank.resource =  curTank.downResource;
->>>>>>> fcb46c02d61e30e8d31c361fb31bfb9c75ad06aa
 
 			io.emit('update', { 'tanks': [p1Tank, p2Tank] });
 		});
