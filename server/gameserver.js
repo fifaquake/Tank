@@ -1,5 +1,13 @@
 var BTTank = require('./objects/bttank.js');
 
+function IsCrash(tank1, tank2)
+{
+	if ((tank1.x - tank2.x)<(tank1.width+tank2.width)/2 && (tank1.y - tank2.y) < (tank1.height + tank2.height)/2)
+		return true;
+	else
+		return false;
+}
+
 exports.startGameServer = function (expressServer) {
     var io = require('socket.io')(expressServer);
 	var p1Tank = null;
@@ -68,8 +76,9 @@ exports.startGameServer = function (expressServer) {
 			var curTank = getCurrentTank(socket.id);
 			if (curTank === null) return;
 
-			curTank.x = curTank.x - 10;
 			curTank.resource = curTank.leftResource;
+			if(curTank.x <= curTank.width/2)//boundary check
+				curTank.x = curTank.width/2;
 
 			io.emit('update', { 'tanks': [p1Tank, p2Tank] });
 		});
@@ -78,8 +87,10 @@ exports.startGameServer = function (expressServer) {
 			var curTank = getCurrentTank(socket.id);
 			if (curTank === null) return;
 
-			curTank.x = curTank.x + 10;
 			curTank.resource = curTank.rightResource;
+			curTank.x = curTank.x + 10;
+			if(curTank.x >= 800 - curTank.width/2)//boundary check
+				curTank.x = 800-curTank.width/2;
 
 			io.emit('update', { 'tanks': [p1Tank, p2Tank] });
 		});
@@ -88,8 +99,9 @@ exports.startGameServer = function (expressServer) {
 			var curTank = getCurrentTank(socket.id);
 			if (curTank === null) return;
 
-			curTank.y = curTank.y - 10;
 			curTank.resource = curTank.upResource;
+			if(curTank.y <= curTank.height/2)//boundary check
+				curTank.y = curTank.height/2;
 
 			io.emit('update', { 'tanks': [p1Tank, p2Tank] });
 		});
@@ -97,8 +109,9 @@ exports.startGameServer = function (expressServer) {
 		socket.on('down', function(data){
 			var curTank = getCurrentTank(socket.id);
 			if (curTank === null) return;
-			curTank.y = curTank.y + 10;
 			curTank.resource =  curTank.downResource;
+			if(curTank.y > 600 - curTank.height/2)//boundary check
+				curTank.y = 600- curTank.height/2;
 
 			io.emit('update', { 'tanks': [p1Tank, p2Tank] });
 		});
