@@ -4,7 +4,7 @@
 	var stage = new PIXI.Stage(0x000000);
 
 	// create a renderer instance
-	var renderer = PIXI.autoDetectRenderer(800, 600);
+	var renderer = PIXI.autoDetectRenderer(800, 600);//TODO: Define screen width/height on server?
 
 	// add the renderer view element to the DOM
 	document.body.appendChild(renderer.view);
