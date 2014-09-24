@@ -8,9 +8,9 @@ var BTTank = function(upRes, downRes, leftRes, rightRes, x, y, id) {
 
 	this.x = x;
 	this.y = y;
+	this.id = id;
 	this.width = 60;
 	this.height = 60;
-	this.id = id;
 }
 
 module.exports = BTTank;
