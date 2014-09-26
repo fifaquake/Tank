@@ -1,5 +1,5 @@
 var BTTank = function(upRes, downRes, leftRes, rightRes, id) {
-	
+	this.speed = 10;
 	this.upResource = upRes;
 	this.downResource = downRes;
 	this.leftResource = leftRes;
@@ -16,7 +16,7 @@ var BTTank = function(upRes, downRes, leftRes, rightRes, id) {
 };
 
 BTTank.prototype.moveUp = function() {
-	this.y -= 10;
+	this.y -= this.speed;
 	this.resource = this.upResource;
 	this.direction = 2;
 
@@ -26,7 +26,7 @@ BTTank.prototype.moveUp = function() {
 };
 
 BTTank.prototype.moveDown = function () {
-	this.y += 10;
+	this.y += this.speed;
 	this.resource =this.downResource;
 	this.direction = 3;
 
@@ -36,7 +36,7 @@ BTTank.prototype.moveDown = function () {
 };
 
 BTTank.prototype.moveLeft = function() {
-	this.x -= 10;
+	this.x -= this.speed;
 
 	this.resource =this.leftResource;
 	this.direction = 0;
@@ -47,7 +47,7 @@ BTTank.prototype.moveLeft = function() {
 
 BTTank.prototype.moveRight = function () {
 	this.resource = this.rightResource;
-	this.x =this.x + 10;
+	this.x =this.x + this.speed;
 	this.direction = 1;
 	// boundary check
 	if(this.x >= 800 -this.width/2)
