@@ -1,4 +1,5 @@
 var BTTank = require('./objects/bttank.js');
+var BTMissile = require('./objects/btmissile.js');
 
 function IsCrash(tank1, tank2)
 {
@@ -12,7 +13,9 @@ exports.startGameServer = function (expressServer) {
     var io = require('socket.io')(expressServer);
 	var p1Tank = null;
 	var p2Tank = null;
+	var missiles = [];
 
+	var timer = setInterval(onTimer, 1000);
 	// get current tank by using the socket id
 	function getCurrentTank(socketId) {
 		var curTank;
@@ -26,6 +29,19 @@ exports.startGameServer = function (expressServer) {
 			curTank = null; 
 
 		return curTank;
+	}
+
+	function update() {
+		io.emit('update',{ 'tanks': [p1Tank, p2Tank], 'missiles' : missiles});
+	}
+	function onTimer() {
+		if (missiles.length === 0) return;
+
+		for (var i = 0; i < missiles.length; i++) {
+			var curMissile = missiles[i];
+			curMissile.move();
+		}
+		update();
 	}
 
 	function getRandomX() {
@@ -58,8 +74,7 @@ exports.startGameServer = function (expressServer) {
 			return;
 		}
 
-		io.emit('update', { 'tanks': [p1Tank, p2Tank] });
-
+		update();
         socket.on('disconnect', function () {
 			if (p1Tank && p1Tank.id === socket.id) {
 				p1Tank = null;
@@ -69,7 +84,7 @@ exports.startGameServer = function (expressServer) {
 			}
             
 			console.log('user disconnected');
-			io.emit('update', { 'tanks': [p1Tank, p2Tank] });
+			update();
         });
 
 		socket.on('left', function(data){
@@ -77,8 +92,7 @@ exports.startGameServer = function (expressServer) {
 			if (curTank === null) return;
 
 			curTank.moveLeft();
-
-			io.emit('update', { 'tanks': [p1Tank, p2Tank] });
+			update();
 		});
 
 		socket.on('right', function(data){
@@ -86,24 +100,29 @@ exports.startGameServer = function (expressServer) {
 			if (curTank === null) return;
 
 			curTank.moveRight();
-
-			io.emit('update', { 'tanks': [p1Tank, p2Tank] });
+			update();
 		});
 
 		socket.on('up', function(data){
 			var curTank = getCurrentTank(socket.id);
 			if (curTank === null) return;
 			curTank.moveUp();
-
-			io.emit('update', { 'tanks': [p1Tank, p2Tank] });
+			update();
 		});
 
 		socket.on('down', function(data){
 			var curTank = getCurrentTank(socket.id);
 			if (curTank === null) return;
 			curTank.moveDown();
-
-			io.emit('update', { 'tanks': [p1Tank, p2Tank] });
+			update();
 		});
-    });
+
+		socket.on('fire', function(data) {
+			var curTank = getCurrentTank(socket.id);
+			var position = curTank.getMissilePosition();
+			var missile = new BTMissile(position.x, position.y, socket.id, curTank.direction);
+			missiles.push(missile);
+			update();
+		});
+	});
 };

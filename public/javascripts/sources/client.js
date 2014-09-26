@@ -54,6 +54,10 @@
 		 socket.emit('down', null);
 	}
 
+	function fire() {
+		socket.emit('fire', null);
+	}
+
 	socket.on('welcome', function(data){
 	});
 
@@ -65,6 +69,7 @@
 		}
 
 		var tanks = data.tanks;
+		var missiles = data.missiles;
 
 		for (var i = 0; i < tanks.length; i++) {
 			var curTank = tanks[i];
@@ -81,6 +86,23 @@
 			player.position.x = curTank.x;
 			player.position.y = curTank.y;
 			stage.addChild(player);
+		}
+		
+		for (i = 0; i < missiles.length; i++) {
+			var curMissile = missiles[i];
+			if (null === curMissile) continue;
+			var missileResource ='resources/images/' + curMissile.resource;
+			var missileTexture = PIXI.Texture.fromImage(missileResource);
+			// create a new Sprite using the texture
+			var missile = new PIXI.Sprite(missileTexture );
+			// center the sprites anchor point
+			missile.anchor.x = 0.5;
+			missile.anchor.y = 0.5;
+
+			// move the sprite to the center of the screen
+			missile.position.x = curMissile.x;
+			missile.position.y = curMissile.y;
+			stage.addChild(missile);
 		}
 
 		requestAnimFrame(animate);
