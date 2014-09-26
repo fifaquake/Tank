@@ -10,7 +10,8 @@ var BTMissile = function (x, y, id, direction) {
 	// 2, Up
 	// 3, Down
 	this.direction = direction;
-}
+};
+
 BTMissile.prototype.move = function() {
 	switch(this.direction) {
 		case 0:
@@ -28,6 +29,6 @@ BTMissile.prototype.move = function() {
 		default:
 			// code
 	}
-}
+};
 
 module.exports = BTMissile;

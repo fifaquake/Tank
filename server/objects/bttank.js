@@ -13,7 +13,7 @@ var BTTank = function(upRes, downRes, leftRes, rightRes, id) {
 	this.width = 60;
 	this.height = 60;
 	this.direction = 2;
-}
+};
 
 BTTank.prototype.moveUp = function() {
 	this.y -= 10;
@@ -23,7 +23,7 @@ BTTank.prototype.moveUp = function() {
 	// boundary check
 	if(this.y <= this.height / 2)
 		this.y = this.height / 2;
-}
+};
 
 BTTank.prototype.moveDown = function () {
 	this.y += 10;
@@ -33,7 +33,7 @@ BTTank.prototype.moveDown = function () {
 	// boundary check
 	if(this.y > 600 -this.height/2)
 		this.y = 600-this.height/2;
-}
+};
 
 BTTank.prototype.moveLeft = function() {
 	this.x -= 10;
@@ -43,7 +43,7 @@ BTTank.prototype.moveLeft = function() {
 	// boundary check
 	if(this.x <=this.width/2)
 		this.x =this.width/2;
-}
+};
 
 BTTank.prototype.moveRight = function () {
 	this.resource = this.rightResource;
@@ -52,7 +52,7 @@ BTTank.prototype.moveRight = function () {
 	// boundary check
 	if(this.x >= 800 -this.width/2)
 		this.x = 800-this.width/2;
-}
+};
 
 BTTank.prototype.getMissilePosition = function () {
 	var centerX = this.x + this.width / 2;
@@ -85,10 +85,11 @@ BTTank.prototype.getMissilePosition = function () {
 	}
 
 	return {'x' : missileX, 'y' : missileY};
-}
+};
 
-BTTank.prototype.IsCrash(tank) {
-    return ((tank1.x - tank2.x)<(tank1.width+tank2.width)/2 && (tank1.y - tank2.y) < (tank1.height + tank2.height)/2))
-}
+BTTank.prototype.IsCrash = function(tank) {
+    return ((this.x - tank.x) < (this.width + tank.width) / 2) &&
+		   ((this.y - tank.y) < (this.height + tank.height)/2);
+};
 
 module.exports = BTTank;

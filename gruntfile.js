@@ -14,7 +14,7 @@ module.exports = function(grunt) {
 
 		jshint: {
 			files:['public/javascripts/sources/*.js',
-				   'server/*.js',
+				   'server/**/*.js',
 				   'bin/*',
 				   '!public/javascripts/sources/*.min.js'],
 			options: {
