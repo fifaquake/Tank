@@ -1,4 +1,4 @@
-var BTTank = function(upRes, downRes, leftRes, rightRes, x, y, id) {
+var BTTank = function(upRes, downRes, leftRes, rightRes, id) {
 	
 	this.upResource = upRes;
 	this.downResource = downRes;
@@ -6,8 +6,9 @@ var BTTank = function(upRes, downRes, leftRes, rightRes, x, y, id) {
 	this.rightResource = rightRes;
 	this.resource = this.upResource;
 
-	this.x = x;
-	this.y = y;
+	this.x = Math.floor(Math.random() * 800);
+	this.y = Math.floor(Math.random() * 600);
+
 	this.id = id;
 	this.width = 60;
 	this.height = 60;
@@ -85,4 +86,5 @@ BTTank.prototype.getMissilePosition = function () {
 
 	return {'x' : missileX, 'y' : missileY};
 }
+
 module.exports = BTTank;
