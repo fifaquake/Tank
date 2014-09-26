@@ -30,9 +30,16 @@ exports.startGameServer = function (expressServer) {
 	function onTimer() {
 		if (missiles.length === 0) return;
 
-		for (var i = 0; i < missiles.length; i++) {
+		console.log("There are still " + missiles.length + " missiles");
+
+		for (var i = missiles.length - 1; i >= 0; i--) {
 			var curMissile = missiles[i];
 			curMissile.move();
+			if (!curMissile.isValid()) {
+				console.log("x = ", curMissile.x);
+				console.log("y = ", curMissile.y);
+				missiles.splice(i, 1);
+			}
 		}
 		update();
 	}
