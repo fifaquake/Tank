@@ -7,7 +7,7 @@ exports.startGameServer = function (expressServer) {
 	var p2Tank = null;
 	var missiles = [];
 
-	var timer = setInterval(onTimer, 1000);
+	var timer = setInterval(onTimer, 100);
 	// get current tank by using the socket id
 	function getCurrentTank(socketId) {
 		var curTank;

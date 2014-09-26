@@ -55,8 +55,10 @@ BTTank.prototype.moveRight = function () {
 };
 
 BTTank.prototype.getMissilePosition = function () {
-	var centerX = this.x + this.width / 2;
-	var centerY = this.y + this.height / 2;
+
+	// ? Is this caused by we set the anchor for the tank in the client?
+	var centerX = this.x; // + this.width / 2;
+	var centerY = this.y; // + this.height / 2;
 
 	var missileX = 0;
 	var missileY = 0;
