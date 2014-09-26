@@ -1,14 +1,6 @@
 var BTTank = require('./objects/bttank.js');
 var BTMissile = require('./objects/btmissile.js');
 
-function IsCrash(tank1, tank2)
-{
-	if ((tank1.x - tank2.x)<(tank1.width+tank2.width)/2 && (tank1.y - tank2.y) < (tank1.height + tank2.height)/2)
-		return true;
-	else
-		return false;
-}
-
 exports.startGameServer = function (expressServer) {
     var io = require('socket.io')(expressServer);
 	var p1Tank = null;

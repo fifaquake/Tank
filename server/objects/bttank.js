@@ -87,4 +87,8 @@ BTTank.prototype.getMissilePosition = function () {
 	return {'x' : missileX, 'y' : missileY};
 }
 
+BTTank.prototype.IsCrash(tank) {
+    return ((tank1.x - tank2.x)<(tank1.width+tank2.width)/2 && (tank1.y - tank2.y) < (tank1.height + tank2.height)/2))
+}
+
 module.exports = BTTank;
