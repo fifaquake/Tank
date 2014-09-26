@@ -1,16 +1,9 @@
 (function(){
 	var socket = io();
-	// create an new instance of a pixi stage
-	var stage = new PIXI.Stage(0x000000);
-
-	// create a renderer instance
-	var renderer = PIXI.autoDetectRenderer(800, 600);//TODO: Define screen width/height on server?
-
-	// add the renderer view element to the DOM
-	document.body.appendChild(renderer.view);
+	var stage, renderer;
+	var canvasWidth, canvasHeight;
 
 	function animate() {
-
 		requestAnimFrame(animate);
 
 		// render the stage   
@@ -59,6 +52,15 @@
 	}
 
 	socket.on('welcome', function(data){
+		canvasWidth = data.width;
+		canvasHeight = data.height;
+
+		// create an new instance of a pixi stage
+		stage = new PIXI.Stage(0x000000);
+		// create a renderer instance
+		renderer = PIXI.autoDetectRenderer(canvasWidth, canvasHeight);
+		// add the renderer view element to the DOM
+		document.body.appendChild(renderer.view);
 	});
 
 	socket.on('update', function(data){
