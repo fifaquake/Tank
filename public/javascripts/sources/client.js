@@ -30,7 +30,10 @@
 		}
 	});
 
-	// should sent messages to server
+	function playSound(name) {
+		var ss = document.getElementById(name);
+		ss.play();
+	}
 	function moveLeft() {
 		 socket.emit('left', null);
 	}
@@ -48,6 +51,7 @@
 	}
 
 	function fire() {
+		playSound('fire');
 		socket.emit('fire', null);
 	}
 
