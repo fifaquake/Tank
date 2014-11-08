@@ -133,10 +133,10 @@ BTTank.prototype.IsCollision = function(tank) {
 	var ownBoundary = this.getBoundaryBox();
 	var otherBoundary = tank.getBoundaryBox();
 
-	return !(otherBoundary.left > ownBoundary.right ||
-			otherBoundary.right < ownBoundary.left ||
-			otherBoundary.top > ownBoundary.bottom ||
-			otherBoundary.bottom < ownBoundary.top);
+	return !(otherBoundary.left >= ownBoundary.right ||
+			otherBoundary.right <= ownBoundary.left ||
+			otherBoundary.top >= ownBoundary.bottom ||
+			otherBoundary.bottom <= ownBoundary.top);
 };
 
 module.exports = BTTank;
