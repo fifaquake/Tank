@@ -1,4 +1,4 @@
-var clientConfig = require("../clientConfig.js");
+var config = require("../config.js");
 
 var BTTank = function(upRes, downRes, leftRes, rightRes, id) {
 	this.speed = 10;
@@ -8,8 +8,8 @@ var BTTank = function(upRes, downRes, leftRes, rightRes, id) {
 	this.rightResource = rightRes;
 	this.resource = this.upResource;
 
-	this.x = Math.floor(Math.random() * clientConfig.clientWidth);
-	this.y = Math.floor(Math.random() * clientConfig.clientHeight);
+	this.x = Math.floor(Math.random() * config.screen.width);
+	this.y = Math.floor(Math.random() * config.screen.height);
 
 	this.id = id;
 	this.width = 60;
@@ -33,8 +33,8 @@ BTTank.prototype.moveDown = function () {
 	this.direction = 3;
 
 	// boundary check
-	if(this.y > clientConfig.clientHeight - this.height/2)
-		this.y = clientConfig.clientHeight -this.height/2;
+	if(this.y > config.screen.height - this.height/2)
+		this.y = config.screen.height -this.height/2;
 };
 
 BTTank.prototype.moveLeft = function() {
@@ -52,8 +52,8 @@ BTTank.prototype.moveRight = function () {
 	this.x =this.x + this.speed;
 	this.direction = 1;
 	// boundary check
-	if(this.x >= clientConfig.clientWidth -this.width/2)
-		this.x = clientConfig.clientWidth -this.width/2;
+	if(this.x >= config.screen.width -this.width/2)
+		this.x = config.screen.width -this.width/2;
 };
 
 BTTank.prototype.getMissilePosition = function () {

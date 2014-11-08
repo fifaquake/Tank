@@ -1,4 +1,4 @@
-var clientConfig = require('../clientconfig.js');
+var config = require('../config.js');
 
 var BTMissile = function (x, y, id, direction) {
 	this.x = x;
@@ -35,9 +35,9 @@ BTMissile.prototype.move = function() {
 
 BTMissile.prototype.isValid = function() {
 	return (this.x >= 0 &&
-			this.x <= clientConfig.clientWidth &&
+			this.x <= config.screen.width &&
 			this.y >= 0 &&
-			this.y <= clientConfig.clientHeight);
+			this.y <= config.screen.height);
 };
 
 module.exports = BTMissile;

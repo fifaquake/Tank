@@ -1,6 +1,6 @@
 var BTTank = require('./objects/bttank.js');
 var BTMissile = require('./objects/btmissile.js');
-var clientConfig = require('./clientconfig.js');
+var config = require('./config.js');
 
 exports.startGameServer = function (expressServer) {
     var io = require('socket.io')(expressServer);
@@ -46,7 +46,7 @@ exports.startGameServer = function (expressServer) {
 
     io.on('connection', function (socket) {
 
-        socket.emit('welcome', {'width' : clientConfig.Width, 'height' : clientConfig.Height});
+        socket.emit('welcome', {'width' : config.screen.Width, 'height' : config.screen.Height});
 
         console.log('a user connected with id = ' + socket.id);
 
