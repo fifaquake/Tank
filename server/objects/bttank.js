@@ -37,14 +37,45 @@ BTTank.prototype.moveDown = function () {
 		this.y = config.screen.height -this.height/2;
 };
 
-BTTank.prototype.moveLeft = function() {
-	this.x -= this.speed;
-
+BTTank.prototype.moveLeft = function(btObjects) {
+	// set the correct resource and direction
 	this.resource =this.leftResource;
 	this.direction = 0;
-	// boundary check
-	if(this.x <=this.width/2)
+
+	// check whether the left move will cause collision.
+	var tanks = btObjects.Tanks;
+	var minimunMove = 10;
+	for (var i = 0; i < tanks.length; i++) {
+		var curMovement = this.speed;
+		if (this.canMoveLeft(tanks[i])) {
+			// in case that the distance between the two tanks is little than the speed.
+			curMovement = this.getBoundaryBox().left - tanks[i].getBoundaryBox().right;
+			if (curMovement >= 0 && curMovement < minimunMove) {
+				minimunMove = curMovement;
+			}
+		}
+		else {
+			minimunMove = 0;
+		}
+	}
+
+	if (minimunMove > 0) {
+		this.x -= this.speed;
+
+		// boundary check
+		if(this.x <=this.width/2)
 		this.x =this.width/2;
+	}
+};
+
+BTTank.prototype.canMoveLeft = function(tank) {
+	var ownBoundary = this.getBoundaryBox();
+	var otherBoundary = tank.getBoundaryBox();
+
+	console.log("own left :" + ownBoundary.left + " own right :"  + ownBoundary.right);
+	console.log("other left :" + otherBoundary.left + " other right :" +  otherBoundary.right);
+
+	return (ownBoundary.left >= otherBoundary.right || ownBoundary.right <= otherBoundary.left);
 };
 
 BTTank.prototype.moveRight = function () {
@@ -91,9 +122,19 @@ BTTank.prototype.getMissilePosition = function () {
 	return {'x' : missileX, 'y' : missileY};
 };
 
+BTTank.prototype.getBoundaryBox = function() {
+	return {
+		"left" : this.x,
+		"top" : this.y,
+		"right" : this.x + config.player.width,
+		"bottom" : this.y + config.player.height,
+	};
+};
+
 BTTank.prototype.IsCrash = function(tank) {
     return ((this.x - tank.x) < (this.width + tank.width) / 2) &&
 		   ((this.y - tank.y) < (this.height + tank.height)/2);
 };
+
 
 module.exports = BTTank;

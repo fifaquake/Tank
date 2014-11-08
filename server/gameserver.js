@@ -24,6 +24,20 @@ exports.startGameServer = function (expressServer) {
 		return curTank;
 	}
 
+	function getOtherTank(socketId) {
+		var curTank;
+		if (p1Tank &&(p1Tank.id !== socketId)) {
+			curTank = p1Tank;
+		}
+		else if (p2Tank && (p2Tank.id !== socketId)) {
+			curTank = p2Tank;
+		}
+		else
+			curTank = null; 
+
+		return curTank;
+	}
+
 	function update() {
 		io.emit('update',{ 'tanks': [p1Tank, p2Tank], 'missiles' : missiles});
 	}
@@ -75,7 +89,15 @@ exports.startGameServer = function (expressServer) {
 			var curTank = getCurrentTank(socket.id);
 			if (curTank === null) return;
 
-			curTank.moveLeft();
+			var otherTank = getOtherTank(socket.id);
+
+			if (otherTank !== null) {
+				curTank.moveLeft({Tanks:[otherTank]});
+			}
+			else {
+				curTank.moveLeft({Tanks:[]});
+			}
+			
 			update();
 		});
 
