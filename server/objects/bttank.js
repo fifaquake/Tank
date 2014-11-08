@@ -44,7 +44,7 @@ BTTank.prototype.moveLeft = function(btObjects) {
 
 	// check whether the left move will cause collision.
 	var tanks = btObjects.Tanks;
-	var minimunMove = 10;
+	var minimunMove = this.speed;
 	for (var i = 0; i < tanks.length; i++) {
 		var curMovement = this.speed;
 		if (this.canMoveLeft(tanks[i])) {
