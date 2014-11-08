@@ -72,19 +72,43 @@ BTTank.prototype.canMoveLeft = function(tank) {
 	var ownBoundary = this.getBoundaryBox();
 	var otherBoundary = tank.getBoundaryBox();
 
-	console.log("own left :" + ownBoundary.left + " own right :"  + ownBoundary.right);
-	console.log("other left :" + otherBoundary.left + " other right :" +  otherBoundary.right);
-
 	return (ownBoundary.left >= otherBoundary.right || ownBoundary.right <= otherBoundary.left);
 };
 
-BTTank.prototype.moveRight = function () {
+BTTank.prototype.moveRight = function (btObjects) {
 	this.resource = this.rightResource;
-	this.x =this.x + this.speed;
 	this.direction = 1;
-	// boundary check
-	if(this.x >= config.screen.width -this.width/2)
+
+	// check whether the left move will cause collision.
+	var tanks = btObjects.Tanks;
+	var minimunMove = this.speed;
+	for (var i = 0; i < tanks.length; i++) {
+		var curMovement = this.speed;
+		if (this.canMoveRight(tanks[i])) {
+			// in case that the distance between the two tanks is little than the speed.
+			curMovement = tanks[i].getBoundaryBox().left - this.getBoundaryBox().right;
+			if (curMovement >= 0 && curMovement < minimunMove) {
+				minimunMove = curMovement;
+			}
+		}
+		else {
+			minimunMove = 0;
+		}
+	}
+
+	if (minimunMove > 0) {
+		this.x += minimunMove;
+		// boundary check
+		if(this.x >= config.screen.width -this.width/2)
 		this.x = config.screen.width -this.width/2;
+	};
+};
+
+BTTank.prototype.canMoveRight = function(tank) {
+	var ownBoundary = this.getBoundaryBox();
+	var otherBoundary = tank.getBoundaryBox();
+
+	return (ownBoundary.right <= otherBoundary.left || ownBoundary.left >= otherBoundary.right);
 };
 
 BTTank.prototype.getMissilePosition = function () {

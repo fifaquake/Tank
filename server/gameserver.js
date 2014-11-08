@@ -105,7 +105,14 @@ exports.startGameServer = function (expressServer) {
 			var curTank = getCurrentTank(socket.id);
 			if (curTank === null) return;
 
-			curTank.moveRight();
+			var otherTank = getOtherTank(socket.id);
+
+			if (otherTank !== null) {
+				curTank.moveRight({Tanks:[otherTank]});
+			}
+			else {
+				curTank.moveRight({Tanks:[]});
+			}
 			update();
 		});
 
