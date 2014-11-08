@@ -17,20 +17,34 @@ var BTTank = function(upRes, downRes, leftRes, rightRes, id) {
 	this.direction = config.player.direction;
 };
 
-BTTank.prototype.moveUp = function() {
+BTTank.prototype.moveUp = function(btObjects) {
 	this.y -= this.speed;
 	this.resource = this.upResource;
 	this.direction = 2;
+
+	var tanks = btObjects.Tanks;
+	for (var i = 0; i < tanks.length; i++) {
+		if (this.IsCollision(tanks[i])) {
+			this.y = tanks[i].getBoundaryBox().bottom;
+		}
+	}
 
 	// boundary check
 	if(this.y <= this.height / 2)
 		this.y = this.height / 2;
 };
 
-BTTank.prototype.moveDown = function () {
+BTTank.prototype.moveDown = function (btObjects) {
 	this.y += this.speed;
 	this.resource =this.downResource;
 	this.direction = 3;
+
+	var tanks = btObjects.Tanks;
+	for (var i = 0; i < tanks.length; i++) {
+		if (this.IsCollision(tanks[i])) {
+			this.y = tanks[i].y - tanks[i].height;
+		}
+	}
 
 	// boundary check
 	if(this.y > config.screen.height - this.height/2)

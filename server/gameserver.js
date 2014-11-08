@@ -119,14 +119,30 @@ exports.startGameServer = function (expressServer) {
 		socket.on('up', function(data){
 			var curTank = getCurrentTank(socket.id);
 			if (curTank === null) return;
-			curTank.moveUp();
+
+			var otherTank = getOtherTank(socket.id);
+
+			if (otherTank !== null) {
+				curTank.moveUp({Tanks:[otherTank]});
+			}
+			else {
+				curTank.moveUp({Tanks:[]});
+			}
 			update();
 		});
 
 		socket.on('down', function(data){
 			var curTank = getCurrentTank(socket.id);
 			if (curTank === null) return;
-			curTank.moveDown();
+
+			var otherTank = getOtherTank(socket.id);
+
+			if (otherTank !== null) {
+				curTank.moveDown({Tanks:[otherTank]});
+			}
+			else {
+				curTank.moveDown({Tanks:[]});
+			}
 			update();
 		});
 
