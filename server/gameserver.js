@@ -38,6 +38,17 @@ exports.startGameServer = function (expressServer) {
 		return curTank;
 	}
 
+	function getOtherTanks(socketId) {
+		var otherTank = getOtherTank(socketId);
+
+		if (otherTank !== null) {
+			return [otherTank]
+		}
+		else {
+			return []
+		}
+	}
+
 	function update() {
 		io.emit('update',{ 'tanks': [p1Tank, p2Tank], 'missiles' : missiles});
 	}
@@ -89,14 +100,7 @@ exports.startGameServer = function (expressServer) {
 			var curTank = getCurrentTank(socket.id);
 			if (curTank === null) return;
 
-			var otherTank = getOtherTank(socket.id);
-
-			if (otherTank !== null) {
-				curTank.moveLeft({Tanks:[otherTank]});
-			}
-			else {
-				curTank.moveLeft({Tanks:[]});
-			}
+			curTank.moveLeft({Tanks:getOtherTanks(socket.id)});
 			
 			update();
 		});
@@ -105,14 +109,8 @@ exports.startGameServer = function (expressServer) {
 			var curTank = getCurrentTank(socket.id);
 			if (curTank === null) return;
 
-			var otherTank = getOtherTank(socket.id);
+			curTank.moveRight({Tanks:getOtherTanks(socket.id)});
 
-			if (otherTank !== null) {
-				curTank.moveRight({Tanks:[otherTank]});
-			}
-			else {
-				curTank.moveRight({Tanks:[]});
-			}
 			update();
 		});
 
@@ -120,14 +118,8 @@ exports.startGameServer = function (expressServer) {
 			var curTank = getCurrentTank(socket.id);
 			if (curTank === null) return;
 
-			var otherTank = getOtherTank(socket.id);
+			curTank.moveUp({Tanks:getOtherTanks(socket.id)});
 
-			if (otherTank !== null) {
-				curTank.moveUp({Tanks:[otherTank]});
-			}
-			else {
-				curTank.moveUp({Tanks:[]});
-			}
 			update();
 		});
 
@@ -135,14 +127,8 @@ exports.startGameServer = function (expressServer) {
 			var curTank = getCurrentTank(socket.id);
 			if (curTank === null) return;
 
-			var otherTank = getOtherTank(socket.id);
+			curTank.moveDown({Tanks:getOtherTanks(socket.id)});
 
-			if (otherTank !== null) {
-				curTank.moveDown({Tanks:[otherTank]});
-			}
-			else {
-				curTank.moveDown({Tanks:[]});
-			}
 			update();
 		});
 
