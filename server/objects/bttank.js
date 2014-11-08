@@ -1,7 +1,7 @@
 var config = require("../config.js");
 
 var BTTank = function(upRes, downRes, leftRes, rightRes, id) {
-	this.speed = 10;
+	this.speed = config.player.speed;
 	this.upResource = upRes;
 	this.downResource = downRes;
 	this.leftResource = leftRes;
@@ -12,9 +12,9 @@ var BTTank = function(upRes, downRes, leftRes, rightRes, id) {
 	this.y = Math.floor(Math.random() * config.screen.height);
 
 	this.id = id;
-	this.width = 60;
-	this.height = 60;
-	this.direction = 2;
+	this.width = config.player.width;
+	this.height = config.player.height;
+	this.direction = config.player.direction;
 };
 
 BTTank.prototype.moveUp = function() {

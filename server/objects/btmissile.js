@@ -4,7 +4,7 @@ var BTMissile = function (x, y, id, direction) {
 	this.x = x;
 	this.y = y;
 	this.id = id;
-	this.speed = 15;
+	this.speed = config.missile.speed;
 	this.resource = 'tankmissile.gif';
 
 	// 0, Left
