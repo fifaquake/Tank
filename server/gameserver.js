@@ -42,10 +42,10 @@ exports.startGameServer = function (expressServer) {
 		var otherTank = getOtherTank(socketId);
 
 		if (otherTank !== null) {
-			return [otherTank]
+			return [otherTank];
 		}
 		else {
-			return []
+			return [];
 		}
 	}
 

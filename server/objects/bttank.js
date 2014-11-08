@@ -79,7 +79,7 @@ BTTank.prototype.moveRight = function (btObjects) {
 		if (this.IsCollision(tanks[i])) {
 			this.x = tanks[i].x - tanks[i].width;
 		}
-	};
+	}
 
 	if(this.x >= config.screen.width -this.width/2)
 		this.x = config.screen.width -this.width/2;
@@ -136,7 +136,7 @@ BTTank.prototype.IsCollision = function(tank) {
 	return !(otherBoundary.left > ownBoundary.right ||
 			otherBoundary.right < ownBoundary.left ||
 			otherBoundary.top > ownBoundary.bottom ||
-			otherBoundary.bottom < ownBoundary.top)
-}
+			otherBoundary.bottom < ownBoundary.top);
+};
 
 module.exports = BTTank;
