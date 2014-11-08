@@ -46,7 +46,7 @@ exports.startGameServer = function (expressServer) {
 
     io.on('connection', function (socket) {
 
-        socket.emit('welcome', {'width' : config.screen.Width, 'height' : config.screen.Height});
+        socket.emit('welcome', {'width' : config.screen.width, 'height' : config.screen.height});
 
         console.log('a user connected with id = ' + socket.id);
 
