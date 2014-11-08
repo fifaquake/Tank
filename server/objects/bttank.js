@@ -60,7 +60,7 @@ BTTank.prototype.moveLeft = function(btObjects) {
 	}
 
 	if (minimunMove > 0) {
-		this.x -= this.speed;
+		this.x -= minimunMove;
 
 		// boundary check
 		if(this.x <=this.width/2)
