@@ -1,4 +1,5 @@
 var config = require("../config.js");
+var BTBoundingBox = require("./bTBoundingBox.js");
 
 var BTTank = function(upRes, downRes, leftRes, rightRes, id) {
 	this.speed = config.player.speed;
@@ -25,7 +26,7 @@ BTTank.prototype.moveUp = function(btObjects) {
 	var tanks = btObjects.Tanks;
 	for (var i = 0; i < tanks.length; i++) {
 		if (this.IsCollision(tanks[i])) {
-			this.y = tanks[i].getBoundaryBox().bottom;
+			this.y = tanks[i].getBoundingBox().bottom;
 		}
 	}
 
@@ -59,7 +60,7 @@ BTTank.prototype.moveLeft = function(btObjects) {
 	var tanks = btObjects.Tanks;
 	for (var i = 0; i < tanks.length; i++) {
 		if (this.IsCollision(tanks[i])) {
-			this.x = tanks[i].getBoundaryBox().right;
+			this.x = tanks[i].getBoundingBox().right;
 		}
 	}
 
@@ -120,23 +121,21 @@ BTTank.prototype.getMissilePosition = function () {
 	return {'x' : missileX, 'y' : missileY};
 };
 
-BTTank.prototype.getBoundaryBox = function() {
-	return {
-		"left" : this.x,
-		"top" : this.y,
-		"right" : this.x + config.player.width,
-		"bottom" : this.y + config.player.height,
-	};
+BTTank.prototype.getBoundingBox = function() {
+	var result = new BTBoundingBox();
+	result.left = this.x;
+	result.top = this.y;
+	result.right = this.x + this.width;
+	result.bottom = this.y + this.height;
+
+	return result;
 };
 
 BTTank.prototype.IsCollision = function(tank) {
-	var ownBoundary = this.getBoundaryBox();
-	var otherBoundary = tank.getBoundaryBox();
+	var ownBoundary = this.getBoundingBox();
+	var otherBoundary = tank.getBoundingBox();
 
-	return !(otherBoundary.left >= ownBoundary.right ||
-			otherBoundary.right <= ownBoundary.left ||
-			otherBoundary.top >= ownBoundary.bottom ||
-			otherBoundary.bottom <= ownBoundary.top);
+	return ownBoundary.IsCollision(otherBoundary);
 };
 
 module.exports = BTTank;
