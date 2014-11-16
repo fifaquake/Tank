@@ -13,6 +13,8 @@ module.exports =
 		},
 		"missile" : {
 			"speed" : 15,
+			"width" : 17,
+			"height" : 17,
 		},
 	};
 })();

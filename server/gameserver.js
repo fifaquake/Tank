@@ -59,7 +59,7 @@ exports.startGameServer = function (expressServer) {
 
 		for (var i = missiles.length - 1; i >= 0; i--) {
 			var curMissile = missiles[i];
-			curMissile.move();
+			curMissile.move(p1Tank, p2Tank);
 			if (!curMissile.isValid()) {
 				console.log("x = ", curMissile.x);
 				console.log("y = ", curMissile.y);

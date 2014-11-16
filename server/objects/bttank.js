@@ -15,6 +15,7 @@ var BTTank = function(upRes, downRes, leftRes, rightRes, id) {
 	this.width = config.player.width;
 	this.height = config.player.height;
 	this.direction = config.player.direction;
+	this.HP = 100;
 };
 
 BTTank.prototype.moveUp = function(btObjects) {
@@ -122,18 +123,27 @@ BTTank.prototype.getMissilePosition = function () {
 
 BTTank.prototype.getBoundingBox = function() {
 	var result = new BTBoundingBox();
-	result.left = this.x;
-	result.top = this.y;
-	result.right = this.x + this.width;
-	result.bottom = this.y + this.height;
+	result.left = this.x - this.width/2;
+	result.top = this.y - this.width/2;
+	result.right = this.x + this.width/2;
+	result.bottom = this.y + this.height/2;
 
 	return result;
+};
+
+BTTank.prototype.Hited = function() {
+	this.HP = this.HP - 10;//Move to missile
+	if(!this.IsAlive())
+		this.resource = "blast4.gif";//move to config
+};
+
+BTTank.prototype.IsAlive = function() {
+	return this.HP > 0;
 };
 
 BTTank.prototype.IsCollision = function(tank) {
 	var ownBoundary = this.getBoundingBox();
 	var otherBoundary = tank.getBoundingBox();
-
 	return ownBoundary.IsCollision(otherBoundary);
 };
 
