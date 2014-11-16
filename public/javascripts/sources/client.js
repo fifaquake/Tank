@@ -1,16 +1,9 @@
 (function(){
 	var socket = io();
-	// create an new instance of a pixi stage
-	var stage = new PIXI.Stage(0x000000);
-
-	// create a renderer instance
-	var renderer = PIXI.autoDetectRenderer(800, 600);//TODO: Define screen width/height on server?
-
-	// add the renderer view element to the DOM
-	document.body.appendChild(renderer.view);
+	var stage, renderer;
+	var canvasWidth, canvasHeight;
 
 	function animate() {
-
 		requestAnimFrame(animate);
 
 		// render the stage   
@@ -37,7 +30,10 @@
 		}
 	});
 
-	// should sent messages to server
+	function playSound(name) {
+		var ss = document.getElementById(name);
+		ss.play();
+	}
 	function moveLeft() {
 		 socket.emit('left', null);
 	}
@@ -54,7 +50,21 @@
 		 socket.emit('down', null);
 	}
 
+	function fire() {
+		playSound('fire');
+		socket.emit('fire', null);
+	}
+
 	socket.on('welcome', function(data){
+		canvasWidth = data.width;
+		canvasHeight = data.height;
+
+		// create an new instance of a pixi stage
+		stage = new PIXI.Stage(0x000000);
+		// create a renderer instance
+		renderer = PIXI.autoDetectRenderer(canvasWidth, canvasHeight);
+		// add the renderer view element to the DOM
+		document.body.appendChild(renderer.view);
 	});
 
 	socket.on('update', function(data){
@@ -65,6 +75,7 @@
 		}
 
 		var tanks = data.tanks;
+		var missiles = data.missiles;
 
 		for (var i = 0; i < tanks.length; i++) {
 			var curTank = tanks[i];
@@ -81,6 +92,23 @@
 			player.position.x = curTank.x;
 			player.position.y = curTank.y;
 			stage.addChild(player);
+		}
+		
+		for (i = 0; i < missiles.length; i++) {
+			var curMissile = missiles[i];
+			if (null === curMissile) continue;
+			var missileResource ='resources/images/' + curMissile.resource;
+			var missileTexture = PIXI.Texture.fromImage(missileResource);
+			// create a new Sprite using the texture
+			var missile = new PIXI.Sprite(missileTexture );
+			// center the sprites anchor point
+			missile.anchor.x = 0.5;
+			missile.anchor.y = 0.5;
+
+			// move the sprite to the center of the screen
+			missile.position.x = curMissile.x;
+			missile.position.y = curMissile.y;
+			stage.addChild(missile);
 		}
 
 		requestAnimFrame(animate);
