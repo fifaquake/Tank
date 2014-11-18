@@ -59,7 +59,7 @@ exports.startGameServer = function (expressServer) {
 
 		for (var i = missiles.length - 1; i >= 0; i--) {
 			var curMissile = missiles[i];
-			curMissile.move();
+			curMissile.move(p1Tank, p2Tank);
 			if (!curMissile.isValid()) {
 				console.log("x = ", curMissile.x);
 				console.log("y = ", curMissile.y);
@@ -99,7 +99,6 @@ exports.startGameServer = function (expressServer) {
 		socket.on('left', function(data){
 			var curTank = getCurrentTank(socket.id);
 			if (curTank === null) return;
-
 			curTank.moveLeft({Tanks:getOtherTanks(socket.id)});
 			
 			update();
@@ -108,27 +107,21 @@ exports.startGameServer = function (expressServer) {
 		socket.on('right', function(data){
 			var curTank = getCurrentTank(socket.id);
 			if (curTank === null) return;
-
 			curTank.moveRight({Tanks:getOtherTanks(socket.id)});
-
 			update();
 		});
 
 		socket.on('up', function(data){
 			var curTank = getCurrentTank(socket.id);
 			if (curTank === null) return;
-
 			curTank.moveUp({Tanks:getOtherTanks(socket.id)});
-
 			update();
 		});
 
 		socket.on('down', function(data){
 			var curTank = getCurrentTank(socket.id);
 			if (curTank === null) return;
-
 			curTank.moveDown({Tanks:getOtherTanks(socket.id)});
-
 			update();
 		});
 
