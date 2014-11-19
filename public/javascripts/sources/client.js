@@ -74,41 +74,23 @@
 			stage.removeChildren(0, stage.children.length);
 		}
 
-		var tanks = data.tanks;
-		var missiles = data.missiles;
+		var allobjects = data.objects;
 
-		for (var i = 0; i < tanks.length; i++) {
-			var curTank = tanks[i];
-			if (null === curTank) continue;
-			var playerResource ='resources/images/' + curTank.resource;
-			var playerTexture = PIXI.Texture.fromImage(playerResource);
+		for (var i = 0; i < allobjects.length; i++) {
+			var curObj = allobjects[i];
+			if (null === curObj) continue;
+			var curobjectResource ='resources/images/' + curObj.resource;
+			var curobjectTexture = PIXI.Texture.fromImage(curobjectResource);
 			// create a new Sprite using the texture
-			var player = new PIXI.Sprite(playerTexture);
+			var curobject = new PIXI.Sprite(curobjectTexture);
 			// center the sprites anchor point
-			player.anchor.x = 0.5;
-			player.anchor.y = 0.5;
+			curobject.anchor.x = 0.5;
+			curobject.anchor.y = 0.5;
 
 			// move the sprite to the center of the screen
-			player.position.x = curTank.x;
-			player.position.y = curTank.y;
-			stage.addChild(player);
-		}
-		
-		for (i = 0; i < missiles.length; i++) {
-			var curMissile = missiles[i];
-			if (null === curMissile) continue;
-			var missileResource ='resources/images/' + curMissile.resource;
-			var missileTexture = PIXI.Texture.fromImage(missileResource);
-			// create a new Sprite using the texture
-			var missile = new PIXI.Sprite(missileTexture );
-			// center the sprites anchor point
-			missile.anchor.x = 0.5;
-			missile.anchor.y = 0.5;
-
-			// move the sprite to the center of the screen
-			missile.position.x = curMissile.x;
-			missile.position.y = curMissile.y;
-			stage.addChild(missile);
+			curobject.position.x = curObj.x;
+			curobject.position.y = curObj.y;
+			stage.addChild(curobject);
 		}
 
 		requestAnimFrame(animate);

@@ -54,7 +54,7 @@ BTMissile.prototype.isValid = function() {
 			this.x <= config.screen.width &&
 			this.y >= 0 &&
 			this.y <= config.screen.height &&
-			this.hit == false);
+			this.hit === false);
 };
 
 BTMissile.prototype.getBoundingBox = function() {

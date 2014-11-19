@@ -7,6 +7,7 @@ exports.startGameServer = function (expressServer) {
 	var p1Tank = null;
 	var p2Tank = null;
 	var missiles = [];
+	var walls = [];
 
 	var timer = setInterval(onTimer, 100);
 	// get current tank by using the socket id
@@ -50,7 +51,13 @@ exports.startGameServer = function (expressServer) {
 	}
 
 	function update() {
-		io.emit('update',{ 'tanks': [p1Tank, p2Tank], 'missiles' : missiles});
+
+		var allobjects = [];
+		allobjects = allobjects.concat(missiles);
+		allobjects = allobjects.concat(walls);
+		allobjects = allobjects.concat([p1Tank, p2Tank]);
+
+		io.emit('update',{ 'objects': allobjects});
 	}
 	function onTimer() {
 		if (missiles.length === 0) return;
