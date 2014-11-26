@@ -1,14 +1,16 @@
 var config = require('../config.js');
 var BTBoundingBox = require("./bTBoundingBox.js");
+var BTObject = require("./btobject.js");
 
 var BTMissile = function (x, y, id, direction) {
 	this.x = x;
 	this.y = y;
-	this.id = id;
-	this.speed = config.missile.speed;
 	this.width = config.missile.width;
 	this.height = config.missile.height;
 	this.resource = 'tankmissile.gif';
+
+	this.id = id;
+	this.speed = config.missile.speed;
 	this.hit = false;
 
 	// 0, Left
@@ -17,6 +19,8 @@ var BTMissile = function (x, y, id, direction) {
 	// 3, Down
 	this.direction = direction;
 };
+
+BTMissile.prototype = new BTObject();
 
 BTMissile.prototype.move = function(p1Tank, p2Tank) {
 	switch(this.direction) {
@@ -40,6 +44,9 @@ BTMissile.prototype.move = function(p1Tank, p2Tank) {
 	if(this.id == p1Tank.id)
 		enemyTank = p2Tank;
 
+	if(enemyTank == null)
+		return;
+
 	var enemyTankBoundary = enemyTank.getBoundingBox();
 	var currentBoundary = this.getBoundingBox();
 	if(currentBoundary.IsCollision(enemyTankBoundary))
@@ -55,15 +62,6 @@ BTMissile.prototype.isValid = function() {
 			this.y >= 0 &&
 			this.y <= config.screen.height &&
 			this.hit === false);
-};
-
-BTMissile.prototype.getBoundingBox = function() {
-	var result = new BTBoundingBox();
-	result.left = this.x;
-	result.top = this.y;
-	result.right = this.x + this.width;
-	result.bottom = this.y + this.height;
-	return result;
 };
 
 module.exports = BTMissile;

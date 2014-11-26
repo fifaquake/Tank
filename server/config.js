@@ -2,8 +2,12 @@ module.exports =
 (function() {
 	return {
 		"screen" : {
-			"width" : 800,
+			"width" : 780,
 			"height" : 600,
+		},
+		"wall" : {
+			"width" : 60,
+			"height" : 60,
 		},
 		"player" : {
 			"speed" : 10,

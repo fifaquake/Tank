@@ -1,5 +1,6 @@
 var config = require("../config.js");
 var BTBoundingBox = require("./bTBoundingBox.js");
+var BTObject = require("./btobject.js");
 
 var BTTank = function(upRes, downRes, leftRes, rightRes, id) {
 	this.speed = config.player.speed;
@@ -18,15 +19,17 @@ var BTTank = function(upRes, downRes, leftRes, rightRes, id) {
 	this.HP = 100;
 };
 
+BTTank.prototype = new BTObject();
+
 BTTank.prototype.moveUp = function(btObjects) {
 	this.y -= this.speed;
 	this.resource = this.upResource;
 	this.direction = 2;
 
-	var tanks = btObjects.Tanks;
-	for (var i = 0; i < tanks.length; i++) {
-		if (this.IsCollision(tanks[i])) {
-			this.y = tanks[i].getBoundingBox().bottom;
+	for (var i = 0; i < btObjects.length; i++) {
+		if (this.IsCollision(btObjects[i])) {
+			this.y = btObjects[i].getBoundingBox().bottom;
+			break;
 		}
 	}
 
@@ -40,10 +43,10 @@ BTTank.prototype.moveDown = function (btObjects) {
 	this.resource =this.downResource;
 	this.direction = 3;
 
-	var tanks = btObjects.Tanks;
-	for (var i = 0; i < tanks.length; i++) {
-		if (this.IsCollision(tanks[i])) {
-			this.y = tanks[i].y - tanks[i].height;
+	for (var i = 0; i < btObjects.length; i++) {
+		if (this.IsCollision(btObjects[i])) {
+			this.y = btObjects[i].y - btObjects[i].height;
+			break;
 		}
 	}
 
@@ -57,10 +60,10 @@ BTTank.prototype.moveLeft = function(btObjects) {
 	this.direction = 0;
 	this.x -= this.speed;
 
-	var tanks = btObjects.Tanks;
-	for (var i = 0; i < tanks.length; i++) {
-		if (this.IsCollision(tanks[i])) {
-			this.x = tanks[i].getBoundingBox().right;
+	for (var i = 0; i < btObjects.length; i++) {
+		if (this.IsCollision(btObjects[i])) {
+			this.x = btObjects[i].getBoundingBox().right;
+			break;
 		}
 	}
 
@@ -74,11 +77,10 @@ BTTank.prototype.moveRight = function (btObjects) {
 	this.direction = 1;
 	this.x += this.speed;
 
-	var tanks = btObjects.Tanks;
-
-	for (var i = 0; i < tanks.length; i++) {
-		if (this.IsCollision(tanks[i])) {
-			this.x = tanks[i].x - tanks[i].width;
+	for (var i = 0; i < btObjects.length; i++) {
+		if (this.IsCollision(btObjects[i])) {
+			this.x = btObjects[i].x - btObjects[i].width;
+			break;
 		}
 	}
 
@@ -121,16 +123,6 @@ BTTank.prototype.getMissilePosition = function () {
 	return {'x' : missileX, 'y' : missileY};
 };
 
-BTTank.prototype.getBoundingBox = function() {
-	var result = new BTBoundingBox();
-	result.left = this.x - this.width/2;
-	result.top = this.y - this.width/2;
-	result.right = this.x + this.width/2;
-	result.bottom = this.y + this.height/2;
-
-	return result;
-};
-
 BTTank.prototype.Hited = function() {
 	this.HP = this.HP - 10;//Move to missile
 	if(!this.IsAlive())
@@ -138,13 +130,8 @@ BTTank.prototype.Hited = function() {
 };
 
 BTTank.prototype.IsAlive = function() {
-	return this.HP > 0;
-};
 
-BTTank.prototype.IsCollision = function(tank) {
-	var ownBoundary = this.getBoundingBox();
-	var otherBoundary = tank.getBoundingBox();
-	return ownBoundary.IsCollision(otherBoundary);
+	return this.HP > 0;
 };
 
 module.exports = BTTank;
