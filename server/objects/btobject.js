@@ -1,11 +1,11 @@
 var BTBoundingBox = require("./bTBoundingBox.js");
 
-var BTObject = function() {
-	this.resource = null;	
-	this.x = 0
-	this.y = 0
-	this.width = 0;
-	this.height = 0;
+var BTObject = function(res, x, y, width, height) {
+	this.resource = res;	
+	this.x = x;
+	this.y = y;
+	this.width = width;
+	this.height = height;
 };
 
 BTObject.prototype.getBoundingBox = function() {

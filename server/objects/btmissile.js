@@ -3,12 +3,12 @@ var BTBoundingBox = require("./bTBoundingBox.js");
 var BTObject = require("./btobject.js");
 
 var BTMissile = function (x, y, id, direction) {
-	this.x = x;
-	this.y = y;
-	this.width = config.missile.width;
-	this.height = config.missile.height;
-	this.resource = 'tankmissile.gif';
-
+	BTObject.call(this,'tankmissile.gif', 
+		x, 
+		y, 
+		config.missile.width,
+		config.missile.height);
+	
 	this.id = id;
 	this.speed = config.missile.speed;
 	this.hit = false;

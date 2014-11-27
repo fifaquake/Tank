@@ -2,21 +2,33 @@ var config = require("../config.js");
 var BTBoundingBox = require("./bTBoundingBox.js");
 var BTObject = require("./btobject.js");
 
-var BTTank = function(upRes, downRes, leftRes, rightRes, id) {
-	this.speed = config.player.speed;
-	this.upResource = upRes;
-	this.downResource = downRes;
-	this.leftResource = leftRes;
-	this.rightResource = rightRes;
-	this.resource = this.upResource;
-	
-	this.x = Math.floor(Math.random() * config.screen.width);
-	this.y = Math.floor(Math.random() * config.screen.height);
+var BTTank = function(player, id) {
+
+	if(player == 1)
+	{
+		this.upResource = 'p1tankU.gif';
+		this.downResource = 'p1tankD.gif';
+		this.leftResource = 'p1tankL.gif';
+		this.rightResource = 'p1tankR.gif';
+	}
+	else
+	{
+		this.upResource = 'p2tankU.gif';
+		this.downResource = 'p2tankD.gif';
+		this.leftResource = 'p2tankL.gif';
+		this.rightResource = 'p2tankR.gif';
+	}
+
 	this.id = id;
-	this.width = config.player.width;
-	this.height = config.player.height;
-	this.direction = config.player.direction;
 	this.HP = 100;
+	this.speed = config.player.speed;
+	this.direction = config.player.direction;	
+
+	BTObject.call(this, this.upResource,
+	Math.floor(Math.random() * config.screen.width),
+	Math.floor(Math.random() * config.screen.height),
+	config.player.width,
+	config.player.height);
 };
 
 BTTank.prototype = new BTObject();
