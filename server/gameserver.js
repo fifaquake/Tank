@@ -1,5 +1,6 @@
 var BTTank = require('./objects/bttank.js');
 var BTMissile = require('./objects/btmissile.js');
+var BTWall = require('./objects/btwall.js');
 var config = require('./config.js');
 
 exports.startGameServer = function (expressServer) {
@@ -90,6 +91,10 @@ exports.startGameServer = function (expressServer) {
 			return;
 		}
 
+		//Add matrix for describe the wall
+		walls = [];
+		walls.push(new BTWall(0,0), new BTWall(1,0), new BTWall(2,0))
+
 		update();
         socket.on('disconnect', function () {
 			if (p1Tank && p1Tank.id === socket.id) {
@@ -106,29 +111,44 @@ exports.startGameServer = function (expressServer) {
 		socket.on('left', function(data){
 			var curTank = getCurrentTank(socket.id);
 			if (curTank === null) return;
-			curTank.moveLeft({Tanks:getOtherTanks(socket.id)});
-			
+
+			var btObjects = [];
+			btObjects = btObjects.concat(walls);
+			btObjects = btObjects.concat(getOtherTanks(socket.id));
+			curTank.moveLeft(btObjects);			
 			update();
 		});
 
 		socket.on('right', function(data){
 			var curTank = getCurrentTank(socket.id);
 			if (curTank === null) return;
-			curTank.moveRight({Tanks:getOtherTanks(socket.id)});
+
+			var btObjects = [];
+			btObjects = btObjects.concat(walls);
+			btObjects = btObjects.concat(getOtherTanks(socket.id));
+			curTank.moveRight(btObjects);
 			update();
 		});
 
 		socket.on('up', function(data){
 			var curTank = getCurrentTank(socket.id);
 			if (curTank === null) return;
-			curTank.moveUp({Tanks:getOtherTanks(socket.id)});
+
+			var btObjects = [];
+			btObjects = btObjects.concat(walls);
+			btObjects = btObjects.concat(getOtherTanks(socket.id));
+			curTank.moveUp(btObjects);
 			update();
 		});
 
 		socket.on('down', function(data){
 			var curTank = getCurrentTank(socket.id);
 			if (curTank === null) return;
-			curTank.moveDown({Tanks:getOtherTanks(socket.id)});
+
+			var btObjects = [];
+			btObjects = btObjects.concat(walls);
+			btObjects = btObjects.concat(getOtherTanks(socket.id));
+			curTank.moveDown(btObjects);
 			update();
 		});
 
