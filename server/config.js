@@ -5,7 +5,7 @@ module.exports =
 			"width" : 780,
 			"height" : 600,
 		},
-		"wall" : {
+		"sceneObject" : {
 			"width" : 60,
 			"height" : 60,
 		},

@@ -1,6 +1,7 @@
 var BTTank = require('./objects/bttank.js');
 var BTMissile = require('./objects/btmissile.js');
 var BTWall = require('./objects/btwall.js');
+var BTGrass = require('./objects/btgrass.js');
 var config = require('./config.js');
 
 exports.startGameServer = function (expressServer) {
@@ -9,6 +10,43 @@ exports.startGameServer = function (expressServer) {
 	var p2Tank = null;
 	var missiles = [];
 	var walls = [];
+	var grasses = [];
+	var sceneMatrix =[
+	[0,0,0,0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0,0,0,0],
+	[0,0,1,1,1,0,0,0,1,1,1,0,0],
+	[0,0,2,0,2,0,0,0,0,2,0,0,0],
+	[0,0,2,2,2,0,0,0,0,2,0,0,0],
+	[0,0,2,0,2,0,0,0,0,2,0,0,0],
+	[0,0,1,1,1,0,0,0,0,1,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0,0,0,0],
+	];
+
+	function createScene()
+	{
+		walls = [];
+		grasses = [];
+		for(var row =0; row < sceneMatrix.length; row++)
+		{
+			for (var column = 0; column < sceneMatrix[row].length; column++)
+			{
+				if(sceneMatrix[row][column]==1)
+				{
+					walls.push(new BTWall(column,row));						
+				}
+
+				if(sceneMatrix[row][column]==2)
+				{
+					grasses.push(new BTGrass(column,row));						
+				}
+
+				//Add other type
+			}
+		}
+
+	}
 
 	var timer = setInterval(onTimer, 100);
 	// get current tank by using the socket id
@@ -57,6 +95,7 @@ exports.startGameServer = function (expressServer) {
 		allobjects = allobjects.concat(missiles);
 		allobjects = allobjects.concat(walls);
 		allobjects = allobjects.concat([p1Tank, p2Tank]);
+		allobjects = allobjects.concat(grasses);
 
 		io.emit('update',{ 'objects': allobjects});
 	}
@@ -84,16 +123,14 @@ exports.startGameServer = function (expressServer) {
         console.log('a user connected with id = ' + socket.id);
 
         if (p1Tank === null) {
-			p1Tank = new BTTank('p1tankU.gif', 'p1tankD.gif', 'p1tankL.gif', 'p1TankR.gif', socket.id);
+			p1Tank = new BTTank(1, socket.id);
+			createScene();
+
         } else if (p2Tank === null){
-			p2Tank = new BTTank('p2tankU.gif', 'p2tankD.gif', 'p2tankL.gif', 'p2TankR.gif', socket.id);
+			p2Tank = new BTTank(2, socket.id);
         } else {
 			return;
 		}
-
-		//Add matrix for describe the wall
-		walls = [];
-		walls.push(new BTWall(0,0), new BTWall(1,0), new BTWall(2,0))
 
 		update();
         socket.on('disconnect', function () {
