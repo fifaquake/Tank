@@ -96,6 +96,10 @@ exports.startGameServer = function (expressServer) {
 		allobjects = allobjects.concat(walls);
 		allobjects = allobjects.concat([p1Tank, p2Tank]);
 		allobjects = allobjects.concat(grasses);
+		if(p1Tank != null)
+			allobjects = allobjects.concat(p1Tank.BTHPs)
+		if(p2Tank != null)
+			allobjects = allobjects.concat(p2Tank.BTHPs)
 
 		io.emit('update',{ 'objects': allobjects});
 	}

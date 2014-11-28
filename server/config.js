@@ -20,5 +20,10 @@ module.exports =
 			"width" : 17,
 			"height" : 17,
 		},
+		"hp":
+		{
+			"width":16,
+			"height":16,
+		}
 	};
 })();
