@@ -89,6 +89,22 @@ exports.startGameServer = function (expressServer) {
 		}
 	}
 
+	function canfire(socketId)
+	{
+		existMissileNumber = 0;
+		for(var index = 0; index < missiles.length; index++)
+		{
+			if(missiles[index].id == socketId)
+			{
+				existMissileNumber++;
+				if(existMissileNumber >= config.missile.MaxNumber)
+					return false;
+			}
+		}
+
+		return true;
+	}
+
 	function update() {
 
 		var allobjects = [];
@@ -96,6 +112,10 @@ exports.startGameServer = function (expressServer) {
 		allobjects = allobjects.concat(walls);
 		allobjects = allobjects.concat([p1Tank, p2Tank]);
 		allobjects = allobjects.concat(grasses);
+		if(p1Tank != null)
+			allobjects = allobjects.concat(p1Tank.BTHPs)
+		if(p2Tank != null)
+			allobjects = allobjects.concat(p2Tank.BTHPs)
 
 		io.emit('update',{ 'objects': allobjects});
 	}
@@ -106,7 +126,7 @@ exports.startGameServer = function (expressServer) {
 
 		for (var i = missiles.length - 1; i >= 0; i--) {
 			var curMissile = missiles[i];
-			curMissile.move(p1Tank, p2Tank);
+			curMissile.move(p1Tank, p2Tank, walls);
 			if (!curMissile.isValid()) {
 				console.log("x = ", curMissile.x);
 				console.log("y = ", curMissile.y);
@@ -190,6 +210,9 @@ exports.startGameServer = function (expressServer) {
 		});
 
 		socket.on('fire', function(data) {
+			if(!canfire(socket.id))
+				return;
+
 			var curTank = getCurrentTank(socket.id);
 			var position = curTank.getMissilePosition();
 			var missile = new BTMissile(position.x, position.y, socket.id, curTank.direction);

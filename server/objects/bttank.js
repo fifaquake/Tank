@@ -1,6 +1,7 @@
 var config = require("../config.js");
 var BTBoundingBox = require("./bTBoundingBox.js");
 var BTObject = require("./btobject.js");
+var BTHP = require("./bthp.js");
 
 var BTTank = function(player, id) {
 
@@ -10,6 +11,12 @@ var BTTank = function(player, id) {
 		this.downResource = 'p1tankD.gif';
 		this.leftResource = 'p1tankL.gif';
 		this.rightResource = 'p1tankR.gif';
+		this.BTHPs = [];
+		for(var index = 0; index < 10; index++)
+		{
+			this.BTHPs.push(new BTHP(index))
+		}
+		
 	}
 	else
 	{
@@ -17,10 +24,14 @@ var BTTank = function(player, id) {
 		this.downResource = 'p2tankD.gif';
 		this.leftResource = 'p2tankL.gif';
 		this.rightResource = 'p2tankR.gif';
+		this.BTHPs=[];
+		for(var index = 46; index > 36; index--)
+		{
+			this.BTHPs.push(new BTHP(index))
+		}
 	}
 
 	this.id = id;
-	this.HP = 100;
 	this.speed = config.player.speed;
 	this.direction = config.player.direction;	
 
@@ -136,14 +147,13 @@ BTTank.prototype.getMissilePosition = function () {
 };
 
 BTTank.prototype.Hited = function() {
-	this.HP = this.HP - 10;//Move to missile
+	this.BTHPs.pop();
 	if(!this.IsAlive())
 		this.resource = "blast4.gif";//move to config
 };
 
 BTTank.prototype.IsAlive = function() {
-
-	return this.HP > 0;
+	return this.BTHPs.length > 0;
 };
 
 module.exports = BTTank;

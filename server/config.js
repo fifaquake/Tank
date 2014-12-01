@@ -19,6 +19,12 @@ module.exports =
 			"speed" : 15,
 			"width" : 17,
 			"height" : 17,
+			"MaxNumber":2,
 		},
+		"hp":
+		{
+			"width":16,
+			"height":16,
+		}
 	};
 })();
