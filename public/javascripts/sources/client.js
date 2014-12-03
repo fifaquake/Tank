@@ -10,6 +10,8 @@
 		renderer.render(stage);
 	}
 
+	requestAnimFrame(animate);
+
 	$(document).keydown(function (event) {
 		switch (event.keyCode) {
 			case 65: // a
@@ -29,6 +31,12 @@
 				break;
 		}
 	});
+
+	function endWith(target, end)
+	{
+		var reg=new RegExp(end+"$");
+		return reg.test(target); 
+	}
 
 	function playSound(name) {
 		var ss = document.getElementById(name);
@@ -55,6 +63,56 @@
 		socket.emit('fire', null);
 	}
 
+	function refreshStage(data)
+	{
+		var newDatas = data.objects;
+
+		//Keep exist data
+		for (var existIndex = stage.children.length - 1; existIndex >= 0; existIndex--)
+		{
+			var existObject = stage.children[existIndex];
+
+			var existInNew = false;
+			for(var newIndex = 0; newIndex < newDatas.length; newIndex++)
+			{
+				var newData = newDatas[newIndex];
+				if (null === newData) continue;
+				if( existObject.position.x == newData.x &&
+					existObject.position.y == newData.y &&
+					endWith(existObject.texture.baseTexture.imageUrl, newData.resource))
+					{
+						newDatas.splice(newIndex, 1);//Remove the exist data
+						existInNew = true;
+						break;
+					}			
+			}
+
+			if(!existInNew)
+			{
+				stage.children.splice(existIndex, 1);
+			}
+		}
+
+		//Add new data
+		for (var i = 0; i < newDatas.length; i++) {
+			var curObj = newDatas[i];
+			if (null === curObj) continue;
+			var curobjectResource ='resources/images/' + curObj.resource;
+			var curobjectTexture = PIXI.Texture.fromImage(curobjectResource);
+			// create a new Sprite using the texture
+			var curobject = new PIXI.Sprite(curobjectTexture);
+			// center the sprites anchor point
+			curobject.anchor.x = 0.5;
+			curobject.anchor.y = 0.5;
+
+			// move the sprite to the center of the screen
+			curobject.position.x = curObj.x;
+			curobject.position.y = curObj.y;
+			stage.addChildAt(curobject, 0);
+		}
+
+	}
+
 	socket.on('welcome', function(data){
 		canvasWidth = data.width;
 		canvasHeight = data.height;
@@ -70,29 +128,6 @@
 	socket.on('update', function(data){
 		if (!data) return;
 		
-		if (stage.children.length > 0) {
-			stage.removeChildren(0, stage.children.length);
-		}
-
-		var allobjects = data.objects;
-
-		for (var i = 0; i < allobjects.length; i++) {
-			var curObj = allobjects[i];
-			if (null === curObj) continue;
-			var curobjectResource ='resources/images/' + curObj.resource;
-			var curobjectTexture = PIXI.Texture.fromImage(curobjectResource);
-			// create a new Sprite using the texture
-			var curobject = new PIXI.Sprite(curobjectTexture);
-			// center the sprites anchor point
-			curobject.anchor.x = 0.5;
-			curobject.anchor.y = 0.5;
-
-			// move the sprite to the center of the screen
-			curobject.position.x = curObj.x;
-			curobject.position.y = curObj.y;
-			stage.addChild(curobject);
-		}
-
-		requestAnimFrame(animate);
+		refreshStage(data);
 	});
 })();
