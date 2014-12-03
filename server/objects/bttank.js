@@ -12,9 +12,9 @@ var BTTank = function(player, id) {
 		this.leftResource = 'p1tankL.gif';
 		this.rightResource = 'p1tankR.gif';
 		this.BTHPs = [];
-		for(var index = 0; index < 10; index++)
+		for(var i = 0; i < 10; i++)
 		{
-			this.BTHPs.push(new BTHP(index))
+			this.BTHPs.push(new BTHP(i));
 		}
 		
 	}
@@ -25,9 +25,9 @@ var BTTank = function(player, id) {
 		this.leftResource = 'p2tankL.gif';
 		this.rightResource = 'p2tankR.gif';
 		this.BTHPs=[];
-		for(var index = 46; index > 36; index--)
+		for(var j = 46; j > 36; j--)
 		{
-			this.BTHPs.push(new BTHP(index))
+			this.BTHPs.push(new BTHP(j));
 		}
 	}
 
