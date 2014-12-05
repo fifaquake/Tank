@@ -2,6 +2,7 @@ var BTTank = require('./objects/bttank.js');
 var BTMissile = require('./objects/btmissile.js');
 var BTWall = require('./objects/btwall.js');
 var BTGrass = require('./objects/btgrass.js');
+var BTSteel = require('./objects/btsteel.js');
 var config = require('./config.js');
 
 exports.startGameServer = function (expressServer) {
@@ -11,14 +12,15 @@ exports.startGameServer = function (expressServer) {
 	var missiles = [];
 	var walls = [];
 	var grasses = [];
+	var steels = [];
 	var sceneMatrix =[
 	[0,0,0,0,0,0,0,0,0,0,0,0,0],
 	[0,0,0,0,0,0,0,0,0,0,0,0,0],
-	[0,0,1,1,1,0,0,0,1,1,1,0,0],
+	[0,0,1,1,1,0,0,0,3,3,3,0,0],
 	[0,0,2,0,2,0,0,0,0,2,0,0,0],
 	[0,0,2,2,2,0,0,0,0,2,0,0,0],
 	[0,0,2,0,2,0,0,0,0,2,0,0,0],
-	[0,0,1,1,1,0,0,0,0,1,0,0,0],
+	[0,0,1,1,1,0,0,0,0,3,0,0,0],
 	[0,0,0,0,0,0,0,0,0,0,0,0,0],
 	[0,0,0,0,0,0,0,0,0,0,0,0,0],
 	[0,0,0,0,0,0,0,0,0,0,0,0,0],
@@ -28,6 +30,7 @@ exports.startGameServer = function (expressServer) {
 	{
 		walls = [];
 		grasses = [];
+		steels = [];
 		for(var row =0; row < sceneMatrix.length; row++)
 		{
 			for (var column = 0; column < sceneMatrix[row].length; column++)
@@ -42,10 +45,24 @@ exports.startGameServer = function (expressServer) {
 					grasses.push(new BTGrass(column,row));						
 				}
 
+				if(sceneMatrix[row][column]==3)
+				{
+					steels.push(new BTSteel(column,row));						
+				}
+
 				//Add other type
 			}
 		}
 
+	}
+
+	function getTankBlocks(socketId)
+	{
+		var btObjects = [];
+		btObjects = btObjects.concat(walls);
+		btObjects = btObjects.concat(steels);
+		btObjects = btObjects.concat(getOtherTanks(socketId));
+		return  btObjects;
 	}
 
 	var timer = setInterval(onTimer, 100);
@@ -110,6 +127,7 @@ exports.startGameServer = function (expressServer) {
 		var allobjects = [];
 		allobjects = allobjects.concat(missiles);
 		allobjects = allobjects.concat(walls);
+		allobjects = allobjects.concat(steels);
 		allobjects = allobjects.concat([p1Tank, p2Tank]);
 		allobjects = allobjects.concat(grasses);
 		if(p1Tank !== null)
@@ -126,7 +144,7 @@ exports.startGameServer = function (expressServer) {
 
 		for (var i = missiles.length - 1; i >= 0; i--) {
 			var curMissile = missiles[i];
-			curMissile.move(p1Tank, p2Tank, walls);
+			curMissile.move(p1Tank, p2Tank, walls, steels);
 			if (!curMissile.isValid()) {
 				console.log("x = ", curMissile.x);
 				console.log("y = ", curMissile.y);
@@ -168,44 +186,28 @@ exports.startGameServer = function (expressServer) {
 		socket.on('left', function(data){
 			var curTank = getCurrentTank(socket.id);
 			if (curTank === null) return;
-
-			var btObjects = [];
-			btObjects = btObjects.concat(walls);
-			btObjects = btObjects.concat(getOtherTanks(socket.id));
-			curTank.moveLeft(btObjects);			
+			curTank.moveLeft(getTankBlocks(socket.id));			
 			update();
 		});
 
 		socket.on('right', function(data){
 			var curTank = getCurrentTank(socket.id);
 			if (curTank === null) return;
-
-			var btObjects = [];
-			btObjects = btObjects.concat(walls);
-			btObjects = btObjects.concat(getOtherTanks(socket.id));
-			curTank.moveRight(btObjects);
+			curTank.moveRight(getTankBlocks(socket.id));
 			update();
 		});
 
 		socket.on('up', function(data){
 			var curTank = getCurrentTank(socket.id);
 			if (curTank === null) return;
-
-			var btObjects = [];
-			btObjects = btObjects.concat(walls);
-			btObjects = btObjects.concat(getOtherTanks(socket.id));
-			curTank.moveUp(btObjects);
+			curTank.moveUp(getTankBlocks(socket.id));
 			update();
 		});
 
 		socket.on('down', function(data){
 			var curTank = getCurrentTank(socket.id);
 			if (curTank === null) return;
-
-			var btObjects = [];
-			btObjects = btObjects.concat(walls);
-			btObjects = btObjects.concat(getOtherTanks(socket.id));
-			curTank.moveDown(btObjects);
+			curTank.moveDown(getTankBlocks(socket.id));
 			update();
 		});
 

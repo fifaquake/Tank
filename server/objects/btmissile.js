@@ -22,7 +22,7 @@ var BTMissile = function (x, y, id, direction) {
 
 BTMissile.prototype = new BTObject();
 
-BTMissile.prototype.move = function(p1Tank, p2Tank, walls) {
+BTMissile.prototype.move = function(p1Tank, p2Tank, walls, steels) {
 	switch(this.direction) {
 		case 0:
 			this.x -= this.speed;
@@ -56,13 +56,23 @@ BTMissile.prototype.move = function(p1Tank, p2Tank, walls) {
 		}
 	}	
 
-	for(var index = 0; index < walls.length; index++)
+	for(var indexw = 0; indexw < walls.length; indexw++)
 	{
-		var wallBoundary = walls[index].getBoundingBox();
+		var wallBoundary = walls[indexw].getBoundingBox();
 		if(currentBoundary.IsCollision(wallBoundary))
 		{
 			this.hit = true;
-			walls.splice(index,1);
+			walls.splice(indexw,1);
+			return;			
+		}
+	}
+
+	for(var indexs = 0; indexs < steels.length; indexs++)
+	{
+		var steelBoundary = steels[indexs].getBoundingBox();
+		if(currentBoundary.IsCollision(steelBoundary))
+		{
+			this.hit = true;
 			return;			
 		}
 	}
