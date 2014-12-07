@@ -148,12 +148,34 @@ BTTank.prototype.getMissilePosition = function () {
 
 BTTank.prototype.Hited = function() {
 	this.BTHPs.pop();
-	if(!this.IsAlive())
+	if(!this.IsAlive()) {
 		this.resource = "blast4.gif";//move to config
+		setTimeout(this.ReBirth(this), 5000);
+	}
 };
 
 BTTank.prototype.IsAlive = function() {
 	return this.BTHPs.length > 0;
 };
+
+BTTank.prototype.ReBirth = function(tank) {
+	if (tank.upResource === 'p1tankU.gif') {
+		tank.BTHPs = [];
+		for(var i = 0; i < 10; i++)
+		{
+			tank.BTHPs.push(new BTHP(i));
+		}
+
+	} else {
+		tank.BTHPs = [];
+		for(var j = 46; j > 36; j--)
+		{
+			tank.BTHPs.push(new BTHP(j));
+		}
+	}
+	tank.resource = tank.upResource;
+	tank.x = Math.floor(Math.random() * config.screen.width);
+	tank.y = Math.floor(Math.random() * config.screen.height);
+}
 
 module.exports = BTTank;
