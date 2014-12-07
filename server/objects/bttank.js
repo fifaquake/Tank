@@ -176,6 +176,6 @@ BTTank.prototype.ReBirth = function(tank) {
 	tank.resource = tank.upResource;
 	tank.x = Math.floor(Math.random() * config.screen.width);
 	tank.y = Math.floor(Math.random() * config.screen.height);
-}
+};
 
 module.exports = BTTank;
