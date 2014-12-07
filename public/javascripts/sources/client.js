@@ -66,6 +66,9 @@
 	function refreshStage(data)
 	{
 		var newDatas = data.objects;
+		var insertIndex = data.insertIndex;//Make sure missile would be added above the water
+		if(stage.children.length === 0)
+			insertIndex = 0;//For initalize
 
 		//Keep exist data
 		for (var existIndex = stage.children.length - 1; existIndex >= 0; existIndex--)
@@ -93,8 +96,8 @@
 			}
 		}
 
-		//Add new data
-		for (var i = 0; i < newDatas.length; i++) {
+		//Add new data		
+		for (var i = newDatas.length -1 ; i >= 0; i--) {
 			var curObj = newDatas[i];
 			if (null === curObj) continue;
 			var curobjectResource ='resources/images/' + curObj.resource;
@@ -108,7 +111,7 @@
 			// move the sprite to the center of the screen
 			curobject.position.x = curObj.x;
 			curobject.position.y = curObj.y;
-			stage.addChildAt(curobject, 0);
+			stage.addChildAt(curobject, insertIndex);
 		}
 
 	}
