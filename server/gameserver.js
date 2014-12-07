@@ -3,6 +3,7 @@ var BTMissile = require('./objects/btmissile.js');
 var BTWall = require('./objects/btwall.js');
 var BTGrass = require('./objects/btgrass.js');
 var BTSteel = require('./objects/btsteel.js');
+var BTWater = require('./objects/btwater.js');
 var config = require('./config.js');
 
 exports.startGameServer = function (expressServer) {
@@ -13,13 +14,15 @@ exports.startGameServer = function (expressServer) {
 	var walls = [];
 	var grasses = [];
 	var steels = [];
+	var waters = [];
+	var waterNumber = 0;
 	var sceneMatrix =[
 	[0,0,0,0,0,0,0,0,0,0,0,0,0],
 	[0,0,0,0,0,0,0,0,0,0,0,0,0],
 	[0,0,1,1,1,0,0,0,3,3,3,0,0],
-	[0,0,2,0,2,0,0,0,0,2,0,0,0],
-	[0,0,2,2,2,0,0,0,0,2,0,0,0],
-	[0,0,2,0,2,0,0,0,0,2,0,0,0],
+	[0,0,2,0,2,0,0,0,0,4,0,0,0],
+	[0,0,2,2,2,0,0,0,0,4,0,0,0],
+	[0,0,2,0,2,0,0,0,0,4,0,0,0],
 	[0,0,1,1,1,0,0,0,0,3,0,0,0],
 	[0,0,0,0,0,0,0,0,0,0,0,0,0],
 	[0,0,0,0,0,0,0,0,0,0,0,0,0],
@@ -31,6 +34,8 @@ exports.startGameServer = function (expressServer) {
 		walls = [];
 		grasses = [];
 		steels = [];
+		waters = [];
+		waterNumber = 0;
 		for(var row =0; row < sceneMatrix.length; row++)
 		{
 			for (var column = 0; column < sceneMatrix[row].length; column++)
@@ -50,6 +55,12 @@ exports.startGameServer = function (expressServer) {
 					steels.push(new BTSteel(column,row));						
 				}
 
+				if(sceneMatrix[row][column]==4)
+				{
+					waters.push(new BTWater(column,row));
+					waterNumber++;					
+				}
+
 				//Add other type
 			}
 		}
@@ -61,6 +72,7 @@ exports.startGameServer = function (expressServer) {
 		var btObjects = [];
 		btObjects = btObjects.concat(walls);
 		btObjects = btObjects.concat(steels);
+		btObjects = btObjects.concat(waters);
 		btObjects = btObjects.concat(getOtherTanks(socketId));
 		return  btObjects;
 	}
@@ -125,6 +137,7 @@ exports.startGameServer = function (expressServer) {
 	function update() {
 
 		var allobjects = [];
+		allobjects = allobjects.concat(waters);
 		allobjects = allobjects.concat(missiles);
 		allobjects = allobjects.concat(walls);
 		allobjects = allobjects.concat(steels);
@@ -135,7 +148,7 @@ exports.startGameServer = function (expressServer) {
 		if(p2Tank !== null)
 			allobjects = allobjects.concat(p2Tank.BTHPs);
 
-		io.emit('update',{ 'objects': allobjects});
+		io.emit('update',{ 'objects': allobjects, 'insertIndex':waterNumber});
 	}
 	function onTimer() {
 		if (missiles.length === 0) return;
