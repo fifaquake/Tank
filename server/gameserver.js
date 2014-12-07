@@ -34,6 +34,7 @@ exports.startGameServer = function (expressServer) {
 		walls = [];
 		grasses = [];
 		steels = [];
+		waters = [];
 		waterNumber = 0;
 		for(var row =0; row < sceneMatrix.length; row++)
 		{
