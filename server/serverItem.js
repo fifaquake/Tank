@@ -189,7 +189,7 @@ var serverItem = function (io, channelIndex) {
 		}
 
 		update();		
-	}
+	};
 
 	this.OnDisconnect = function(socket)
 	{
@@ -202,7 +202,7 @@ var serverItem = function (io, channelIndex) {
         
 		console.log('user disconnected');
 		update();		
-	}
+	};
 
 	this.OnLeft = function(socket)
 	{
@@ -210,7 +210,7 @@ var serverItem = function (io, channelIndex) {
 		if (curTank === null) return;
 		curTank.moveLeft(getTankBlocks(socket.id));			
 		update();
-	}
+	};
 
 	this.OnRight = function(socket)
 	{
@@ -218,7 +218,7 @@ var serverItem = function (io, channelIndex) {
 		if (curTank === null) return;
 		curTank.moveRight(getTankBlocks(socket.id));
 		update();		
-	}
+	};
 
 	this.OnUp = function(socket)
 	{
@@ -226,7 +226,7 @@ var serverItem = function (io, channelIndex) {
 		if (curTank === null) return;
 		curTank.moveUp(getTankBlocks(socket.id));
 		update();
-	}
+	};
 
 	this.OnDown = function(socket)
 	{
@@ -234,7 +234,7 @@ var serverItem = function (io, channelIndex) {
 			if (curTank === null) return;
 			curTank.moveDown(getTankBlocks(socket.id));
 			update();		
-	}
+	};
 
 	this.OnFire = function(socket)
 	{
@@ -246,7 +246,7 @@ var serverItem = function (io, channelIndex) {
 		var missile = new BTMissile(position.x, position.y, socket.id, curTank.direction);
 		missiles.push(missile);
 		update();
-	}
+	};
 
 };
 

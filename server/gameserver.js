@@ -18,7 +18,7 @@ exports.startGameServer = function (expressServer) {
     	var si;
 
     	//Create new channel
-    	if(connectIndex%2 == 0)
+    	if(connectIndex%2 === 0)
     	{
     		channelIndex++;
     		si = new serverItem(io, channelIndex);
@@ -29,7 +29,7 @@ exports.startGameServer = function (expressServer) {
     		si = sis[channelIndex-1];
     	}
     	connectIndex++;    	
-    	socket.join(channelIndex)      
+    	socket.join(channelIndex);      
 
         si.OnConnection(socket);
 
