@@ -9,7 +9,7 @@ Battle Tank is a just-for-fun project. We want to make a online Battle City proj
 3. Enter the folder including your code.  
 4. Input `npm install --production`  
 5. Input `npm start`. Now the server is started up.  
-6. Open your favorite browser and open this link, [http://localhost:3000/games](http://localhost:3000/games).  
+6. Open your favorite browser and open this link, [http://localhost:3000](http://localhost:3000).  
 7. Now enjoy the game!
 
 
