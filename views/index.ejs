@@ -3,9 +3,31 @@
   <head>
     <title><%= title %></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
+	<style type="text/css">
+		<!--
+		body,td,th  {
+		color: #000000;
+		font-family: Verdana;
+		font-size:9pt;
+		}
+		#layout{
+		width: 800px;
+		margin: 0px auto;
+		position:relative left=50% top=50%;
+		}
+		-->
+	</style>
   </head>
   <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+    
+    <div id="layout">
+    	<h1 align=center>Battle Tank</h1>
+    	<iframe id="gameScreen" src="/games" width="800" height="600" frameborder="0" scrolling="no"></iframe>
+    	<p><b>Description</b>: It is real-time game. It is also a network game. Enjoy it with your friends!</p>
+    	<p><b>Rules</b>: Hit your enemy, don't hit by your enemy.</p>
+    	<p><b>Key Settings</b>: up(w), down(s), left(a), right(d), fire(j)</p>
+    	<p><b>Notes</b>: If server is full, please try later. (sorry, currently, our server is not powerful -__-||)</p>
+	</div>
+	<embed src="resources/audios/start.wav" hidden="true" autostart="true" loop="true"> 
   </body>
 </html>
