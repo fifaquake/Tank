@@ -5,58 +5,73 @@ var BTGrass = require('./objects/btgrass.js');
 var BTSteel = require('./objects/btsteel.js');
 var BTWater = require('./objects/btwater.js');
 var config = require('./config.js');
-var serverItem = require('./serverItem.js');
+var BTRoom = require('./btroom.js');
 
 exports.startGameServer = function (expressServer) {
     var io = require('socket.io')(expressServer);
-    var channelIndex = 0;
-    var connectIndex = 0;
-    var sis = [];
+    var roomIndex = 0;
+    var rooms = [];
+    var maxRoomNumber = 2;
+
+    function GetAvailableRoom()
+    {
+        //Search the not full serverItem
+        for(var ri = 0; ri < rooms.length; ri++)
+        {
+            var currentRoom = rooms[ri];
+            if(!currentRoom.isAvailable)
+                continue;
+
+            return currentRoom;
+        }
+
+        //Server cannot afford too many rooms
+        if(roomIndex > config.room.maxRoomNumber)
+            return null;
+
+        //No available serverItem, then create new one
+        roomIndex++;
+        var newRoom = new BTRoom(io, roomIndex); 
+        rooms.push(newRoom);
+        console.log('Room ' + roomIndex + " created!");         
+
+        return newRoom;       
+    }
 
 
     io.on('connection', function (socket) {
-    	var si;
+    	var room = GetAvailableRoom();
+        if(room === null)//no available room
+            return;
 
-    	//Create new channel
-    	if(connectIndex%2 === 0)
-    	{
-    		channelIndex++;
-    		si = new serverItem(io, channelIndex);
-    		sis.push(si);    		
-    	}
-    	else
-    	{
-    		si = sis[channelIndex-1];
-    	}
-    	connectIndex++;    	
-    	socket.join(channelIndex);      
+    	socket.join(room.roomId);
 
-        si.OnConnection(socket);
+        room.OnConnection(socket);
 
 
         socket.on('disconnect', function () {
-        	si.OnDisconnect(socket);
+        	room.OnDisconnect(socket);
         });
 
 		socket.on('left', function(data){
-			si.OnLeft(socket);
+			room.OnLeft(socket);
 		});
 
 		socket.on('right', function(data){
-			si.OnRight(socket);
+			room.OnRight(socket);
 		});
 
 		socket.on('up', function(data){
-			si.OnUp(socket);
+			room.OnUp(socket);
 
 		});
 
 		socket.on('down', function(data){
-			si.OnDown(socket);
+			room.OnDown(socket);
 		});
 
 		socket.on('fire', function(data) {
-			si.OnFire(socket);
+			room.OnFire(socket);
 		});
 	});
 };
