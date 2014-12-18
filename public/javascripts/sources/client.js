@@ -12,7 +12,7 @@
 
 	requestAnimFrame(animate);
 
-	$(document).keydown(function (event) {
+	$(window.parent.document).keydown(function (event) {
 		switch (event.keyCode) {
 			case 65: // a
 				moveLeft();

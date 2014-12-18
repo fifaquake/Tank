@@ -6,8 +6,10 @@ var BTSteel = require('./objects/btsteel.js');
 var BTWater = require('./objects/btwater.js');
 var config = require('./config.js');
 
-var serverItem = function (io, channelIndex) {
-	var isFull = false;
+var BTRoom = function (io, roomIndex) {
+	this.roomId = roomIndex;
+	this.isAvailable = true;
+	var isSceneCreated = false;
 	var p1Tank = null;
 	var p2Tank = null;
 	var missiles = [];
@@ -31,6 +33,9 @@ var serverItem = function (io, channelIndex) {
 
 	function createScene()
 	{
+		if(isSceneCreated)//Create scene once
+			return;
+
 		walls = [];
 		grasses = [];
 		steels = [];
@@ -64,6 +69,8 @@ var serverItem = function (io, channelIndex) {
 				//Add other type
 			}
 		}
+
+		isSceneCreated = true;
 
 	}
 
@@ -148,7 +155,7 @@ var serverItem = function (io, channelIndex) {
 		if(p2Tank !== null)
 			allobjects = allobjects.concat(p2Tank.BTHPs);
 
-		io.sockets.in(channelIndex).emit('update',{ 'objects': allobjects, 'insertIndex':waterNumber});
+		io.sockets.in(roomIndex).emit('update',{ 'objects': allobjects, 'insertIndex':waterNumber});
 	}
 	function onTimer() {
 		if (missiles.length === 0) return;
@@ -172,11 +179,11 @@ var serverItem = function (io, channelIndex) {
 		socket.emit('welcome', {'width' : config.screen.width, 'height' : config.screen.height});
 	    console.log('a user connected with id = ' + socket.id);
 
+	    createScene();
+
         if (p1Tank === null) 
         {
 			p1Tank = new BTTank(1, socket.id);
-			createScene();
-
         } 
         else if (p2Tank === null)
         {
@@ -184,8 +191,12 @@ var serverItem = function (io, channelIndex) {
         } 
         else 
         {
-        	isFull = true;
 			return;
+		}
+
+		if(p1Tank !== null	&& p2Tank !== null)
+		{
+			this.isAvailable = false;
 		}
 
 		update();		
@@ -200,6 +211,7 @@ var serverItem = function (io, channelIndex) {
 			p2Tank = null;
 		}
         
+        this.isAvailable = true;
 		console.log('user disconnected');
 		update();		
 	};
@@ -250,4 +262,4 @@ var serverItem = function (io, channelIndex) {
 
 };
 
-module.exports = serverItem;
+module.exports = BTRoom;
